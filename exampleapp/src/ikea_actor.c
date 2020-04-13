@@ -46,7 +46,8 @@ void ikea_actor_draw(actor_T* self)
 
 actor_T* init_ikea_actor(float x, float y, float z)
 {
-    actor_T* actor = init_actor(texture_get("res/image/ikea.png"), x, y, z);
+    actor_T* actor = init_actor(x, y, z);
+    actor->texture = texture_get("res/image/ikea.png");
     actor->tick = ikea_actor_tick;
     actor->draw = ikea_actor_draw;
     return actor;

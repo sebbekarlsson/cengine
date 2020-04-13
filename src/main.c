@@ -14,11 +14,7 @@ int cengine_main(int argc, char* argv[])
 {
     glUseProgram(APP->shader_program_default);
 
-    GLuint view_location = glGetUniformLocation(APP->shader_program_default, "view");
-    GLuint projection_location = glGetUniformLocation(APP->shader_program_default, "projection"); 
-
-    mat4 v = GLM_MAT4_IDENTITY_INIT;
-    glm_translate(v, (vec3){ 0, 0, 0 });
+    GLuint projection_location = glGetUniformLocation(APP->shader_program_default, "projection");
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -28,7 +24,6 @@ int cengine_main(int argc, char* argv[])
         scene_T* scene = application_get_current_scene(APP);
 
         glfwGetFramebufferSize(APP->window, &APP->width, &APP->height);
-        //ratio = width / (float) height;
 
         glViewport(0, 0, APP->width, APP->height);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -36,7 +31,6 @@ int cengine_main(int argc, char* argv[])
         mat4 p;
         glm_ortho(0.0f, APP->width, APP->height, 0, -10.0f, 100.0f, p);
 
-        glUniformMatrix4fv(view_location, 1, GL_FALSE, (const GLfloat*) v);
         glUniformMatrix4fv(projection_location, 1, GL_FALSE, (const GLfloat*) p);
         
         scene_tick(scene);

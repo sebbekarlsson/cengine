@@ -20,5 +20,7 @@ typedef struct ACTOR_STRUCT
     void (*draw)(struct ACTOR_STRUCT* self);
 } actor_T;
 
-actor_T* init_actor(unsigned int texture, float x, float y, float z);
+actor_T* init_actor(float x, float y, float z);
+
+actor_T* actor_constructor(actor_T* actor, float x, float y, float z);
 #endif

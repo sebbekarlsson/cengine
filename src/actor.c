@@ -3,11 +3,15 @@
 #include <GL/glew.h>
 
 
-actor_T* init_actor(unsigned int texture, float x, float y, float z)
+actor_T* init_actor(float x, float y, float z)
 {
     actor_T* actor = calloc(1, sizeof(struct ACTOR_STRUCT));
+    return actor_constructor(actor, x, y, z);
+}
 
-    actor->texture = texture;
+actor_T* actor_constructor(actor_T* actor, float x, float y, float z)
+{
+    actor->texture = 0;
 
     glGenBuffers(1, &actor->VBO);
     glGenBuffers(1, &actor->EBO); 

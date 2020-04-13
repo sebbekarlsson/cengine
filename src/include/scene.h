@@ -2,6 +2,7 @@
 #define CENGINE_SCENE_H
 #include "dynamic_list.h"
 #include "actor.h"
+#include "camera.h"
 
 
 typedef struct SCENE_STRUCT
@@ -12,6 +13,8 @@ typedef struct SCENE_STRUCT
 
     void (*tick)(struct SCENE_STRUCT* self);
     void (*draw)(struct SCENE_STRUCT* self);
+
+    camera_T* camera;
 } scene_T;
 
 scene_T* init_scene();
