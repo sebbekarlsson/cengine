@@ -32,7 +32,7 @@ int cengine_main(int argc, char* argv[])
         glm_ortho(0.0f, APP->width, APP->height, 0, -10.0f, 100.0f, p);
 
         glUniformMatrix4fv(projection_location, 1, GL_FALSE, (const GLfloat*) p);
-        
+
         scene_tick(scene);
         scene_draw(scene);
 

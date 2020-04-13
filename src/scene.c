@@ -43,22 +43,11 @@ void scene_tick(scene_T* scene)
 
 void scene_draw(scene_T* scene)
 {
-    actor_T* actor_camera = (actor_T*) scene->camera;
+    camera_T* camera = scene->camera;
 
     glBindVertexArray(scene->VAO);
 
-    GLuint view_location = glGetUniformLocation(
-        APP->shader_program_default,
-        "view"
-    );
-
-    mat4 v = GLM_MAT4_IDENTITY_INIT;
-    glm_translate(
-        v,
-        (vec3){ -actor_camera->x, -actor_camera->y, -actor_camera->z }
-    );
-
-    glUniformMatrix4fv(view_location, 1, GL_FALSE, (const GLfloat*) v);
+    camera_bind(camera); 
 
     for (int i = 0; i < scene->actors->size; i++)
     {
@@ -67,6 +56,8 @@ void scene_draw(scene_T* scene)
         if (actor->draw)
             actor->draw(actor);
     }
+
+    camera_unbind(camera);
 
     if (scene->draw)
         scene->draw(scene);

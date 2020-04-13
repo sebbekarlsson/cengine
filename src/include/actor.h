@@ -4,7 +4,11 @@ typedef struct ACTOR_STRUCT
 {
     unsigned int VBO;
     unsigned int EBO;
-    unsigned int texture; 
+    unsigned int texture;
+
+    float rx;
+    float ry;
+    float rz;
 
     float x;
     float y;
