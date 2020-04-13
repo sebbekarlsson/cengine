@@ -1,0 +1,70 @@
+#include "include/texture.h"
+#include <GL/glew.h>
+#include <stdlib.h>
+#include <png.h>
+
+
+
+unsigned int texture_get(const char* pathname)
+{
+    /**
+     * Texture will be stored in this unsigned integer.
+     */
+    unsigned int texture;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    /**
+     * This is texture parameters,
+     * you can see them as "effects" that are applied to the
+     * loaded texture.
+     */
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    /**
+     * Using libpng to read & load a .png file
+     */
+    png_image image = {};
+    image.version = PNG_IMAGE_VERSION;
+
+    if (!png_image_begin_read_from_file(&image, pathname))
+        fprintf(stderr, "Could not read file `%s`: %s\n", pathname, image.message);
+
+    image.format = PNG_FORMAT_RGBA;
+
+    /**
+     * image_pixels in this case is the data we are interested in and which
+     * is used for drawing later.
+     */
+    uint32_t *image_pixels = malloc(sizeof(uint32_t) * image.width * image.height);
+    if (image_pixels == NULL)
+        fprintf(stderr, "Could not allocate memory for an image\n");
+
+    /**
+     * Check for errors
+     */
+    if (!png_image_finish_read(&image, NULL, image_pixels, 0, NULL))
+        fprintf(stderr, "libpng error: %s\n", image.message);
+
+    glTexImage2D(GL_TEXTURE_2D,
+                 0,
+                 GL_RGBA,
+                 image.width,
+                 image.height,
+                 0,
+                 GL_RGBA,
+                 GL_UNSIGNED_BYTE,
+                 image_pixels);
+
+    glGenerateMipmap(GL_TEXTURE_2D);
+
+    return texture;
+}
+
+void texture_free(unsigned int texture)
+{
+    glDeleteTextures(1, &texture);
+}
