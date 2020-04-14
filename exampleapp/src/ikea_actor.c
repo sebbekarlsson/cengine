@@ -10,21 +10,69 @@
 extern application_T* APP;
 
 
+static void move(actor_T* self, float xa, float ya)
+{
+    if (xa != 0 && ya != 0)
+    {
+        move(self, xa, 0);
+        move(self, 0, ya);
+        return;
+    }
+
+    float w = 32;
+    float h = 32;
+
+    scene_T* scene = application_get_current_scene(APP);
+
+    for (int i = 0; i < scene->actors->size; i++)
+    {
+        actor_T* other = scene->actors->items[i];
+
+        if (other == self)
+            continue;
+
+        if (self->x+w+xa > other->x && self->x+xa < other->x + w)
+        {
+            if (self->y+h+ya > other->y && self->y+ya < other->y + h)
+            {
+                self->dy = 0;
+
+                if ((self->y+h)-ya > other->y && self->y-ya < other->y+h)
+                    self->dx = 0;
+
+                return;
+            }
+        } 
+    } 
+
+    self->x += xa;
+    self->y += ya;
+}
+
 void ikea_actor_tick(actor_T* self)
 {
     double dt = APP->delta_time;
     
     float v = 80.0f;
     self->friction = 20.9f;
-
+    
     if (keyboard_check_pressed(GLFW_KEY_RIGHT))
         physics_vec2_push(&self->dx, &self->dy, 0.0f, v * dt);
     if (keyboard_check_pressed(GLFW_KEY_LEFT))
         physics_vec2_push(&self->dx, &self->dy, 180.0f, v * dt);
     if (keyboard_check_pressed(GLFW_KEY_UP))
-        physics_vec2_push(&self->dx, &self->dy, 90.0f, v * dt);
+        physics_vec2_push(&self->dx, &self->dy, 90.0f, (v + 12.0f) * dt);
     if (keyboard_check_pressed(GLFW_KEY_DOWN))
         physics_vec2_push(&self->dx, &self->dy, 270.0f, v * dt);
+
+    float gravity = 32.0f * dt;
+
+    self->dy += gravity;
+
+    move(self, self->dx, self->dy);
+    physics_to_zero(&self->dx, self->friction);
+    physics_to_zero(&self->dy, self->friction);
+
 }
 
 void ikea_actor_draw(actor_T* self)

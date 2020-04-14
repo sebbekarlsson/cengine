@@ -1,5 +1,6 @@
 #include "include/ikea_scene.h"
 #include "include/ikea_actor.h"
+#include "include/ground_actor.h"
 #include <cengine/texture.h>
 #include <cengine/window.h>
 #include <cengine/draw.h>
@@ -48,6 +49,10 @@ scene_T* init_ikea_scene()
     scene->draw = ikea_scene_draw;
 
     scene_add_actor(scene, init_ikea_actor(0, 0, 0));
+
+    float y = 32 * 8;
+    for (int i = 0; i < 16; i++)
+        scene_add_actor(scene, init_ground_actor(i * 32, y + (i*32), 0));
 
     return scene;
 }

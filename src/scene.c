@@ -31,8 +31,6 @@ void scene_tick(scene_T* scene)
     {
         actor_T* actor = (actor_T*) scene->actors->items[i];
 
-        physics_tick_actor(actor); 
-
         if (actor->tick)
             actor->tick(actor); 
     }
