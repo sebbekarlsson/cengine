@@ -24,6 +24,9 @@ void ikea_scene_draw(scene_T* scene)
 
     unsigned int texture = texture_get("res/image/potato.png");
 
+    glUseProgram(APP->shader_program_default);
+    glUniform1i(glGetUniformLocation(APP->shader_program_default, "lighting_enabled"), 0);
+
     draw_texture(
         VBO,
         EBO,
@@ -61,7 +64,7 @@ scene_T* init_ikea_scene()
     scene_T* scene = init_scene();
     scene->draw = ikea_scene_draw;
 
-    scene_add_actor(scene, init_ikea_actor(0, -300, 0));
+    scene_add_actor(scene, (actor_T*)init_ikea_actor(0, -300, 0));
 
     for (int i = 0; i < 128; i++)
     {

@@ -58,6 +58,8 @@ void scene_draw(scene_T* scene)
     }
 
     camera_unbind(camera);
+    
+    glBindVertexArray(scene->VAO);
 
     if (scene->draw)
         scene->draw(scene);
