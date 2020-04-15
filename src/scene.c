@@ -49,6 +49,8 @@ void scene_draw(scene_T* scene)
 
     for (int i = 0; i < scene->actors->size; i++)
     {
+        glBindVertexArray(scene->VAO);
+
         actor_T* actor = (actor_T*) scene->actors->items[i];
 
         if (actor->draw)

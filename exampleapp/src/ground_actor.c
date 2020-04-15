@@ -7,6 +7,7 @@
 #include <cengine/physics.h>
 
 
+extern unsigned int TEXTURE_TILES;
 extern application_T* APP;
 
 
@@ -16,14 +17,18 @@ void ground_actor_draw(actor_T* self)
         self->VBO,
         self->EBO,
         APP->shader_program_default,
-        self->texture,
+        TEXTURE_TILES,
         self->x, self->y, self->z,
         32,
         32,
         255,
         255,
         255,
-        1.0f
+        1.0f,
+        5,
+        0,
+        8,
+        5
     );
 }
 

@@ -14,6 +14,10 @@ void draw_texture(
     float r,
     float g,
     float b,
-    float a
+    float a,
+    int shift_x,
+    int shift_y,
+    int atlas_width,
+    int atlas_height
 );
 #endif

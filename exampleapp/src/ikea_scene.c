@@ -35,13 +35,20 @@ void ikea_scene_draw(scene_T* scene)
         255,
         255,
         255,
-        1.0f
+        1.0f,
+        0,
+        0,
+        0,
+        0
     );
 
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
 
     texture_free(texture);
+
+    glUseProgram(APP->shader_program_default);
+    glUniform1i(glGetUniformLocation(APP->shader_program_default, "lighting_enabled"), 1);
 }
 
 static int _round(float num)
