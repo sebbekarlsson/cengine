@@ -51,6 +51,11 @@ static void move(actor_T* self, float xa, float ya)
 
 void ikea_actor_tick(actor_T* self)
 {
+    scene_T* scene = application_get_current_scene(APP);
+
+    camera_set_x(scene->camera, self->x - (APP->width/2) + 16);
+    camera_set_y(scene->camera, self->y - (APP->height/2) + 16);
+
     double dt = APP->delta_time;
     
     float v = 80.0f;
@@ -61,7 +66,7 @@ void ikea_actor_tick(actor_T* self)
     if (keyboard_check_pressed(GLFW_KEY_LEFT))
         physics_vec2_push(&self->dx, &self->dy, 180.0f, v * dt);
     if (keyboard_check_pressed(GLFW_KEY_UP))
-        physics_vec2_push(&self->dx, &self->dy, 90.0f, (v + 12.0f) * dt);
+        physics_vec2_push(&self->dx, &self->dy, 90.0f, (v + 60.0f) * dt);
     if (keyboard_check_pressed(GLFW_KEY_DOWN))
         physics_vec2_push(&self->dx, &self->dy, 270.0f, v * dt);
 

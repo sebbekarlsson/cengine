@@ -50,8 +50,6 @@ void camera_bind(camera_T* camera)
         camera->view
     );
 
-    glm_translate(camera->view, (vec3){-a->x, -a->y, -a->z});
-
     camera_send_view_to_shader(camera, APP->shader_program_default);
 }
 
@@ -82,4 +80,14 @@ void camera_send_view_to_shader(camera_T* camera, unsigned int shader_program)
         (const GLfloat*)
         camera->view
     );
+}
+
+void camera_set_x(camera_T* camera, float x)
+{
+    ((actor_T*)camera)->x = x;
+}
+
+void camera_set_y(camera_T* camera, float y)
+{
+    ((actor_T*)camera)->y = y;
 }

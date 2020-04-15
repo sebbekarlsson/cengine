@@ -25,4 +25,8 @@ void camera_bind(camera_T* camera);
 void camera_unbind(camera_T* camera);
 
 void camera_send_view_to_shader(camera_T* camera, unsigned int shader_program);
+
+void camera_set_x(camera_T* camera, float x);
+
+void camera_set_y(camera_T* camera, float y);
 #endif

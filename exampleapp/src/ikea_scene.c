@@ -1,6 +1,7 @@
 #include "include/ikea_scene.h"
 #include "include/ikea_actor.h"
 #include "include/ground_actor.h"
+#include "include/perlin.h"
 #include <cengine/texture.h>
 #include <cengine/window.h>
 #include <cengine/draw.h>
@@ -43,16 +44,25 @@ void ikea_scene_draw(scene_T* scene)
     texture_free(texture);
 }
 
+static int _round(float num)
+{
+    return (int)(num < 0 ? (num - 0.5) : (num + 0.5));
+}
+
 scene_T* init_ikea_scene()
 {
     scene_T* scene = init_scene();
     scene->draw = ikea_scene_draw;
 
-    scene_add_actor(scene, init_ikea_actor(0, 0, 0));
+    scene_add_actor(scene, init_ikea_actor(0, -300, 0));
 
-    float y = 32 * 8;
-    for (int i = 0; i < 16; i++)
-        scene_add_actor(scene, init_ground_actor(i * 32, y + (i*32), 0));
+    for (int i = 0; i < 128; i++)
+    {
+        float h = _round(perlin_get2d(i, 0, 0.1f, 20.0f) * 12);
+
+        for (int y = 0; y < h; y++)
+            scene_add_actor(scene, init_ground_actor(i * 32, -(y*32), 0));
+    }
 
     return scene;
 }
