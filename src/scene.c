@@ -13,6 +13,11 @@ extern application_T* APP;
 scene_T* init_scene()
 {
     scene_T* scene = calloc(1, sizeof(struct SCENE_STRUCT));
+    return scene_constructor(scene);
+}
+
+scene_T* scene_constructor(scene_T* scene)
+{
     scene->actors = init_dynamic_list(sizeof(struct ACTOR_STRUCT*));
 
     glGenVertexArrays(1, &scene->VAO);

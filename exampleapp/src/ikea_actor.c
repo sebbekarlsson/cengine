@@ -1,15 +1,31 @@
 #include "include/ikea_actor.h"
+#include "include/ikea_scene.h"
 #include <cengine/actor.h>
 #include <cengine/application.h>
 #include <cengine/draw.h>
 #include <cengine/texture.h>
 #include <cengine/keyboard.h>
 #include <cengine/physics.h>
+#include <math.h>
+#include <cglm/cglm.h>
+#include <cglm/call.h>
 
 
 extern application_T* APP;
-extern unsigned int TEXTURE_TILES;
+extern unsigned int TEXTURE_CHARACTER_TILES;
 
+
+static int mod(int x, int N)
+{
+    return (x % N + N) %N;
+}
+
+static float angle(float x1, float y1, float x2, float y2)
+{
+    float xDiff = x2 - x1;
+    float yDiff = y2 - y1;
+    return atan2(yDiff, xDiff) * 180.0 / GLM_PI;
+}
 
 static void move(actor_T* self, float xa, float ya)
 {
@@ -24,33 +40,45 @@ static void move(actor_T* self, float xa, float ya)
     float h = 32;
 
     scene_T* scene = application_get_current_scene(APP);
+    ikea_scene_T* ikea_scene = (ikea_scene_T*) scene;
+    
 
-    for (int i = 0; i < scene->actors->size; i++)
+    float next_x = (self->x + 8) + xa + (xa > 0 ? 8 : xa < 0 ? -8 : 0);
+    float next_y = (self->y + 8) + ya + (ya > 0 ? 8 : ya < 0 ? -8 : 0);
+
+    chunk_T* chunk = ikea_scene_get_chunk(ikea_scene, (next_x)/(32*16), (next_y)/(32*16));
+
+    for (int x = 0; x < 16; x++)
     {
-        actor_T* other = scene->actors->items[i];
-
-        if (other == self)
-            continue;
-
-        if (self->x+w+xa > other->x && self->x+xa < other->x + w)
+        for (int y = 0; y < 16; y++)
         {
-            if (self->y+h+ya > other->y && self->y+ya < other->y + h)
+            float bx = chunk->x + (x*32);
+            float by = chunk->y + (y*32);
+
+            int block = chunk->blocks[x][y];
+
+            if (block != BLOCK_STONE)
+                continue;
+
+            if (self->x+16+xa > bx && self->x+xa < bx + w)
             {
-                self->dy = 0;
-                ((ikea_actor_T*)self)->ground = 1;
+                if (self->y+16+ya > by && self->y+ya < by + h)
+                {
+                    self->dy = 0;
+                    ((ikea_actor_T*)self)->ground = 1;
 
-                if ((self->y+h)-ya > other->y && self->y-ya < other->y+h)
-                    self->dx = 0;
+                    if ((self->y+16)-ya > by && self->y-ya < by+h)
+                        self->dx = 0;
 
-                return;
+                    return;
+                }
             }
         } 
-    } 
+    }
 
     self->x += xa;
     self->y += ya;
     ((ikea_actor_T*)self)->ground = 0;
-
 }
 
 void ikea_actor_tick(actor_T* self)
@@ -91,18 +119,18 @@ void ikea_actor_draw(actor_T* self)
         self->VBO,
         self->EBO,
         APP->shader_program_default,
-        TEXTURE_TILES,
+        TEXTURE_CHARACTER_TILES,
         self->x, self->y, self->z,
-        32,
-        32,
+        16,
+        16,
         255,
         255,
         255,
         1.0f,
         4,
-        3,
-        8,
-        5
+        0,
+        6,
+        11
     );
 
     glUseProgram(APP->shader_program_default);

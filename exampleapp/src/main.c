@@ -5,6 +5,7 @@
 #include "include/ikea_scene.h"
 
 extern unsigned int TEXTURE_TILES;
+extern unsigned int TEXTURE_CHARACTER_TILES;
 
 
 extern application_T* APP;
@@ -19,8 +20,9 @@ int main(int argc, char* argv[])
     APP = init_application(640, 480, "App"); 
 
     TEXTURE_TILES = texture_get("res/image/tiles.png");
+    TEXTURE_CHARACTER_TILES = texture_get("res/image/oga_sheet.png");
 
-    application_add_scene(APP, init_ikea_scene());
+    application_add_scene(APP, (scene_T*) init_ikea_scene());
 
     return cengine_main(argc, argv);
 }
