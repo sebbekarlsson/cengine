@@ -4,8 +4,27 @@
 #include <png.h>
 
 
+texture_T* init_texture(unsigned int id, int width, int height)
+{
+    texture_T* texture = calloc(1, sizeof(struct TEXTURE_STRUCT));
+    texture->id = id;
+    texture->width = width;
+    texture->height = height;
 
-unsigned int texture_get(const char* pathname)
+    return texture;
+}
+
+unsigned int texture_get_id(const char* pathname)
+{
+    texture_T* texture = texture_get(pathname);
+    unsigned int id =texture->id;
+    
+    free(texture);
+
+    return id;
+}
+
+texture_T* texture_get(const char* pathname)
 {
     /**
      * Texture will be stored in this unsigned integer.
@@ -61,10 +80,11 @@ unsigned int texture_get(const char* pathname)
 
     glGenerateMipmap(GL_TEXTURE_2D);
 
-    return texture;
+    return init_texture(texture, image.width, image.height);
 }
 
-void texture_free(unsigned int texture)
+void texture_free(texture_T* texture)
 {
-    glDeleteTextures(1, &texture);
+    glDeleteTextures(1, &(texture->id));
+    free(texture);
 }

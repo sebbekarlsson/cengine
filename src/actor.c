@@ -11,7 +11,7 @@ actor_T* init_actor(float x, float y, float z)
 
 actor_T* actor_constructor(actor_T* actor, float x, float y, float z)
 {
-    actor->texture = 0;
+    actor->sprite = (void*)0;
 
     glGenBuffers(1, &actor->VBO);
     glGenBuffers(1, &actor->EBO); 

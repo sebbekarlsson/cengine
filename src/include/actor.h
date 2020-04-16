@@ -1,10 +1,13 @@
 #ifndef CENGINE_ACTOR_H
 #define CENGINE_ACTOR_H
+#include "sprite.h"
+
 typedef struct ACTOR_STRUCT
 {
     unsigned int VBO;
     unsigned int EBO;
-    unsigned int texture;
+
+    sprite_T* sprite;
 
     float rx;
     float ry;

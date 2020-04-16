@@ -35,7 +35,7 @@ void ground_actor_draw(actor_T* self)
 actor_T* init_ground_actor(float x, float y, float z)
 {
     actor_T* actor = init_actor(x, y, z);
-    actor->texture = texture_get("res/image/ground.png");
+    actor->sprite = init_sprite_with_texture(texture_get("res/image/ground.png"));
     actor->draw = ground_actor_draw;
     return actor;
 }

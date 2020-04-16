@@ -141,7 +141,6 @@ ikea_actor_T* init_ikea_actor(float x, float y, float z)
 {
     ikea_actor_T* ikea_actor = calloc(1, sizeof(struct IKEA_ACTOR_STRUCT));
     actor_T* actor = actor_constructor((actor_T*) ikea_actor, x, y, z);
-    actor->texture = texture_get("res/image/ikea.png");
     actor->tick = ikea_actor_tick;
     actor->draw = ikea_actor_draw;
     ikea_actor->ground = 0;

@@ -52,7 +52,7 @@ void ikea_scene_draw(scene_T* scene)
     double mx = window_mouse_get_x();
     double my = window_mouse_get_y();
 
-    unsigned int texture = texture_get("res/image/potato.png");
+    texture_T* texture = texture_get("res/image/potato.png");
 
     glUseProgram(APP->shader_program_default);
     glUniform1i(glGetUniformLocation(APP->shader_program_default, "lighting_enabled"), 0);
@@ -61,7 +61,7 @@ void ikea_scene_draw(scene_T* scene)
         VBO,
         EBO,
         APP->shader_program_default,
-        texture,
+        texture->id,
         mx, my, 0,
         32,
         32,
@@ -96,7 +96,7 @@ static int mod(int x, int N)
 
 ikea_scene_T* init_ikea_scene()
 {
-    SEED = 65848;
+    SEED = 11111;
     ikea_scene_T* ikea_scene = calloc(1, sizeof(struct IKEA_SCENE_STRUCT));
     scene_T* scene = scene_constructor((scene_T*)ikea_scene);
     scene->draw = ikea_scene_draw;
