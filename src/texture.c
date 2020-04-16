@@ -88,3 +88,12 @@ void texture_free(texture_T* texture)
     glDeleteTextures(1, &(texture->id));
     free(texture);
 }
+
+texture_coords_T* init_texture_coords(int x, int y)
+{
+    texture_coords_T* texture_coords = calloc(1, sizeof(struct TEXTURE_COORDS_STRUCT));
+    texture_coords->x = x;
+    texture_coords->y = y;
+
+    return texture_coords;
+}

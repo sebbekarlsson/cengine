@@ -15,4 +15,12 @@ unsigned int texture_get_id(const char* pathname);
 texture_T* texture_get(const char* pathname);
 
 void texture_free(texture_T* texture);
+
+typedef struct TEXTURE_COORDS_STRUCT
+{
+    int x;
+    int y;
+} texture_coords_T;
+
+texture_coords_T* init_texture_coords(int x, int y);
 #endif
