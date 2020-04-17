@@ -1,5 +1,6 @@
 #ifndef EXAMPLEAPP_MAIN_H
 #define EXAMPLEAPP_MAIN_H
+#include <cengine/texture.h>
 unsigned int TEXTURE_TILES;
-unsigned int TEXTURE_CHARACTER_TILES;
+texture_T* TEXTURE_CHARACTER_TILES;
 #endif

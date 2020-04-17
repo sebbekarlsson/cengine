@@ -28,7 +28,9 @@ void ground_actor_draw(actor_T* self)
         5,
         0,
         8,
-        5
+        5,
+        0,
+        0
     );
 }
 

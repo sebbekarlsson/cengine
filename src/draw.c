@@ -16,7 +16,9 @@ void draw_texture(
     int shift_x,
     int shift_y,
     int atlas_width,
-    int atlas_height
+    int atlas_height,
+    unsigned int flip_x,
+    unsigned int flip_y
 )
 {
     float vertices[] =
@@ -74,8 +76,11 @@ void draw_texture(
 
     glUniform1i(glGetUniformLocation(shader_program, "atlas_width"), atlas_width);
     glUniform1i(glGetUniformLocation(shader_program, "atlas_height"), atlas_height);
+    
+    glUniform1i(glGetUniformLocation(shader_program, "flip_x"), flip_x);
+    glUniform1i(glGetUniformLocation(shader_program, "flip_y"), flip_y);
 
-     glUniform3fv(glGetUniformLocation(shader_program, "world_pos"), 1, (float[]){ x, y, z });
+    glUniform3fv(glGetUniformLocation(shader_program, "world_pos"), 1, (float[]){ x, y, z });
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 

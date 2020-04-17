@@ -37,7 +37,10 @@ void scene_tick(scene_T* scene)
         actor_T* actor = (actor_T*) scene->actors->items[i];
 
         if (actor->tick)
-            actor->tick(actor); 
+            actor->tick(actor);
+
+        if (actor->sprite)
+            sprite_tick(actor->sprite);
     }
 
     if (scene->tick)

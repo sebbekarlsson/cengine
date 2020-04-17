@@ -10,6 +10,10 @@ texture_T* init_texture(unsigned int id, int width, int height)
     texture->id = id;
     texture->width = width;
     texture->height = height;
+    texture->shift_x = 0;
+    texture->shift_y = 0;
+    texture->atlas_width = 1;
+    texture->atlas_height = 1;
 
     return texture;
 }

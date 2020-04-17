@@ -18,6 +18,8 @@ void draw_texture(
     int shift_x,
     int shift_y,
     int atlas_width,
-    int atlas_height
+    int atlas_height,
+    unsigned int flip_x,
+    unsigned int flip_y
 );
 #endif

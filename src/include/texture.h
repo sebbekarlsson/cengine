@@ -6,6 +6,10 @@ typedef struct TEXTURE_STRUCT
     unsigned int id;
     int width;
     int height;
+    int shift_x;
+    int shift_y;
+    int atlas_width;
+    int atlas_height;
 } texture_T;
 
 texture_T* init_texture(unsigned int id, int width, int height);

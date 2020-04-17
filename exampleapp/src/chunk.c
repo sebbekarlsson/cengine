@@ -79,7 +79,9 @@ void chunk_draw(chunk_T* chunk)
                 tex_x,
                 tex_y,
                 8,
-                5
+                5,
+                0,
+                0
             );
 
             glDeleteBuffers(1, &VBO);

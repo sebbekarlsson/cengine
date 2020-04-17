@@ -12,7 +12,7 @@
 
 
 extern application_T* APP;
-extern unsigned int TEXTURE_CHARACTER_TILES;
+extern texture_T* TEXTURE_CHARACTER_TILES;
 
 
 static int mod(int x, int N)
@@ -85,12 +85,14 @@ void ikea_actor_tick(actor_T* self)
 {
     scene_T* scene = application_get_current_scene(APP);
 
+    ikea_actor_T* ikea_actor = (ikea_actor_T*) self;
+
     camera_set_x(scene->camera, self->x - (APP->width/2) + 16);
     camera_set_y(scene->camera, self->y - (APP->height/2) + 16);
 
     double dt = APP->delta_time;
     
-    float v = 80.0f;
+    float v = 30.0f;
     self->friction = 20.9f;
     float air_res = 10.0f;
     float gravity = 22.0f * dt;
@@ -106,32 +108,29 @@ void ikea_actor_tick(actor_T* self)
         physics_vec2_push(&self->dx, &self->dy, 180.0f, v * dt);
     if (keyboard_check_pressed(GLFW_KEY_UP) &&  ((ikea_actor_T*)self)->ground)
         physics_vec2_push(&self->dx, &self->dy, 90.0f, 8.0f);
-    if (keyboard_check_pressed(GLFW_KEY_DOWN))
-        physics_vec2_push(&self->dx, &self->dy, 270.0f, v * dt);
 
+    if (self->dx > 0)
+    {
+        self->sprite->flip_x = 0;
+        self->sprite->animated = 1;
+    }
+    else
+    if (self->dx < 0)
+    {
+        self->sprite->flip_x = 1;
+        self->sprite->animated = 1;
+    }
+    else
+    {
+        self->sprite->animated = 0;
+    }
 
     move(self, self->dx, self->dy); 
 }
 
 void ikea_actor_draw(actor_T* self)
 {
-    draw_texture(
-        self->VBO,
-        self->EBO,
-        APP->shader_program_default,
-        TEXTURE_CHARACTER_TILES,
-        self->x, self->y, self->z,
-        16,
-        16,
-        255,
-        255,
-        255,
-        1.0f,
-        4,
-        0,
-        6,
-        11
-    );
+    sprite_draw(self->sprite, self->VBO, self->EBO, APP->shader_program_default, self->x, self->y, self->z);
 
     glUseProgram(APP->shader_program_default);
     glUniform3fv(glGetUniformLocation(APP->shader_program_default, "light_pos"), 1, (float[]){self->x, self->y, self->z});
@@ -144,6 +143,20 @@ ikea_actor_T* init_ikea_actor(float x, float y, float z)
     actor->tick = ikea_actor_tick;
     actor->draw = ikea_actor_draw;
     ikea_actor->ground = 0;
+    
+    actor->sprite = init_sprite();
+    actor->sprite->delay = 0.2f;
+    
+    for (int i = 0; i < 6; i++)
+    {
+        texture_T* texture = init_texture(TEXTURE_CHARACTER_TILES->id, TEXTURE_CHARACTER_TILES->width, TEXTURE_CHARACTER_TILES->height);
+        texture->atlas_width = 6;
+        texture->atlas_height = 11;
+        texture->shift_x = 4;
+        texture->shift_y = i;
+
+        sprite_add_texture(actor->sprite, texture);
+    }
 
     return ikea_actor;
 }
