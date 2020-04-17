@@ -9,14 +9,16 @@ enum
     BLOCK_AIR = 0,
     BLOCK_HOTSTONE,
     BLOCK_STONE,
-    BLOCK_GRASS
+    BLOCK_GRASS,
+    BLOCK_MOONROCK
 } block_type;
 
-#define NR_BIOMES 2
+#define NR_BIOMES 3
 enum
 {
+    BIOME_HELL,
     BIOME_WORLD,
-    BIOME_HELL
+    BIOME_SPACE
 } biome_type;
 
 typedef struct CHUNK_STRUCT

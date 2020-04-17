@@ -116,11 +116,28 @@ ikea_scene_T* init_ikea_scene()
 
         for (int y = 0; y < h; y++)
         {
+            float cave_freq = 0.006f;
+            float cave_depth = 20.0f;
             int block_type = BLOCK_STONE;
 
-            float p = perlin_get2d(i, y, 0.006f, 20.0f, 93819);
-            int bio = (int)(perlin_get2d(0, y, 0.06, 20.0f, 95842) * NR_BIOMES);
+            int bio = ((y*32) / ((NR_CHUNKS*CHUNK_SIZE*BLOCK_SIZE) / NR_BIOMES));
 
+           
+            if (bio == BIOME_SPACE)
+            {
+                int nr_blocks = 2;
+                cave_freq += 0.4f;
+                cave_depth += 0.9f;
+
+                int b = (int)(perlin_get2d(i, y, 0.06, 20.0f, 1233) * nr_blocks);
+
+                switch (b)
+                {
+                    case 0: block_type = BLOCK_STONE; break;
+                    case 1: block_type = BLOCK_MOONROCK; break;
+                }
+            }
+            else
             if (bio == BIOME_WORLD)
             {
                 int nr_blocks = 2;
@@ -146,6 +163,8 @@ ikea_scene_T* init_ikea_scene()
                     case 1: block_type = BLOCK_HOTSTONE; break;
                 }
             }
+
+            float p = perlin_get2d(i, y, cave_freq, cave_depth, 93819);
 
             if (p >= 0.55f)
                 block_type = BLOCK_AIR;

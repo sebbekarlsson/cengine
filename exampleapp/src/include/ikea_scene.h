@@ -17,4 +17,6 @@ ikea_scene_T* init_ikea_scene();
 chunk_T* ikea_scene_get_chunk(ikea_scene_T* ikea_scene, float x, float y);
 
 int ikea_scene_get_block(ikea_scene_T* ikea_scene, float x, float y);
+
+void ikea_scene_set_block(ikea_scene_T* ikea_scene, float x, float y, int type);
 #endif

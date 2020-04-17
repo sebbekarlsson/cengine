@@ -121,6 +121,11 @@ void ikea_actor_tick(actor_T* self)
     if (keyboard_check_pressed(GLFW_KEY_LEFT))
         physics_vec2_push(&self->dx, &self->dy, 180.0f, v * dt);
 
+    if (keyboard_check_pressed(GLFW_KEY_SPACE))
+    {
+        ikea_scene_set_block(ikea_scene, self->x, self->y+32, BLOCK_AIR);
+    }
+
     // jump
     if (keyboard_check_pressed(GLFW_KEY_UP) &&  ((ikea_actor_T*)self)->ground)
     {

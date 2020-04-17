@@ -60,6 +60,12 @@ void chunk_draw(chunk_T* chunk)
                 tex_x = 0;
                 tex_y = 1;
             }
+            else
+            if (block == BLOCK_MOONROCK)
+            {
+                tex_x = 1;
+                tex_y = 1;
+            }
 
             glBindVertexArray(scene->VAO);
 
