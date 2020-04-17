@@ -1,14 +1,17 @@
 #ifndef EXAMPLEAPP_CHUNK_H
 #define EXAMPLEAPP_CHUNK_H
 
+#define CHUNK_SIZE 16
+
 enum
 {
-    BLOCK_STONE = 1
+    BLOCK_AIR,
+    BLOCK_STONE
 } block_type;
 
 typedef struct CHUNK_STRUCT
 {
-    int blocks[16][16];
+    int blocks[CHUNK_SIZE][CHUNK_SIZE];
     int x;
     int y;
 } chunk_T;

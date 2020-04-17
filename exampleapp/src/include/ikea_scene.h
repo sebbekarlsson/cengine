@@ -3,10 +3,12 @@
 #include <cengine/scene.h>
 #include "chunk.h"
 
+#define NR_CHUNKS 32
+
 typedef struct IKEA_SCENE_STRUCT
 {
     scene_T base;
-    chunk_T* chunks[16][16];
+    chunk_T* chunks[NR_CHUNKS][NR_CHUNKS];
 } ikea_scene_T;
 
 

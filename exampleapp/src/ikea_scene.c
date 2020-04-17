@@ -18,9 +18,9 @@ void ikea_scene_tick(scene_T* scene)
 {
     ikea_scene_T* ikea_scene = (ikea_scene_T*) scene;
 
-    for (int x = 0; x < 16; x++)
+    for (int x = 0; x < NR_CHUNKS; x++)
     {
-        for (int y = 0; y < 16; y++)
+        for (int y = 0; y < NR_CHUNKS; y++)
         {
             chunk_tick(ikea_scene->chunks[x][y]);
         }
@@ -31,13 +31,26 @@ void ikea_scene_draw(scene_T* scene)
 {
     ikea_scene_T* ikea_scene = (ikea_scene_T*) scene;
 
+    actor_T* actor_camera = (actor_T*) scene->camera;
+
     camera_bind(scene->camera);
 
-    for (int x = 0; x < 16; x++)
+    for (int x = 0; x < NR_CHUNKS; x++)
     {
-        for (int y = 0; y < 16; y++)
+        for (int y = 0; y < NR_CHUNKS; y++)
         {
-            chunk_draw(ikea_scene->chunks[x][y]);
+            chunk_T* chunk = ikea_scene->chunks[x][y];
+
+            if (
+                chunk->x + (CHUNK_SIZE*32) < actor_camera->x ||
+                chunk->x > actor_camera->x + APP->width ||
+
+                chunk->y > actor_camera->y + APP->height ||
+                chunk->y + (CHUNK_SIZE*32) < actor_camera->y
+            )
+                continue;
+
+            chunk_draw(chunk);
         }
     }
 
@@ -57,38 +70,39 @@ static int mod(int x, int N)
     return (x % N + N) %N;
 }
 
+void ikea_scene_set_block(ikea_scene_T* ikea_scene, float x, float y, int type)
+{
+    chunk_T* chunk = ikea_scene_get_chunk(ikea_scene, x, y);
+
+    int bx = mod(x/32, CHUNK_SIZE);
+    int by = mod(y/32, CHUNK_SIZE);
+
+    chunk->blocks[MIN(CHUNK_SIZE, bx)][MIN(CHUNK_SIZE, by)] = type;
+}
+
 ikea_scene_T* init_ikea_scene()
 {
-    SEED = 666;
+    SEED = 300;
     ikea_scene_T* ikea_scene = calloc(1, sizeof(struct IKEA_SCENE_STRUCT));
     scene_T* scene = scene_constructor((scene_T*)ikea_scene);
     scene->draw = ikea_scene_draw;
     scene->tick = ikea_scene_tick;
 
-    for (int x = 0; x < 16; x++)
-    {
-        for (int y = 0; y < 16; y++)
-        {
-            ikea_scene->chunks[x][y] = init_chunk(x*32*16, y*32*16);
-        }
-    }
+    for (int x = 0; x < NR_CHUNKS; x++)
+        for (int y = 0; y < NR_CHUNKS; y++)
+            ikea_scene->chunks[x][y] = init_chunk(x*32*CHUNK_SIZE, y*32*CHUNK_SIZE);
 
     scene_add_actor(scene, (actor_T*)init_ikea_actor(0, 0, 0));
 
-    for (int i = 0; i < 128; i++)
+    for (int i = 0; i < CHUNK_SIZE*NR_CHUNKS; i++)
     {
-        float h = _round(perlin_get2d(i, 0, 0.1f, 20.0f) * 12);
+        float h = _round(perlin_get2d(i, 0, 0.006f, 20.0f) * 100);
 
-        for (int y = h; y > 0; y--)
+        for (int y = 0; y < h; y++)
         {
-            int chunk_x = i / 16;
-            int chunk_y = -(y) / 16;
-            int bx = mod(i, 16);
-            int by = mod(-(y), 16);
+            int yy = (CHUNK_SIZE*NR_CHUNKS) - y;
 
-            //printf("chunk_x: %d, chunk_y: %d, bx: %d, by: %d\n", chunk_x, chunk_y, bx, by);
-
-            ikea_scene->chunks[MIN(16-1, MAX(0, chunk_x))][MIN(16-1, MAX(0, chunk_y))]->blocks[MIN(16, bx)][MIN(16, by)] = BLOCK_STONE;
+            ikea_scene_set_block(ikea_scene, i*32, yy*32, BLOCK_STONE);
         }
     }
 
@@ -97,7 +111,8 @@ ikea_scene_T* init_ikea_scene()
 
 chunk_T* ikea_scene_get_chunk(ikea_scene_T* ikea_scene, float x, float y)
 {
-    int chunk_x = mod(x, 16);
-    int chunk_y = mod(y, 16);
-    return ikea_scene->chunks[MIN(16-1, MAX(0, chunk_x))][MIN(16-1, MAX(0, chunk_y))];
+    int chunk_x = x / (32*CHUNK_SIZE);
+    int chunk_y = y / (32*CHUNK_SIZE);
+
+    return ikea_scene->chunks[MIN(NR_CHUNKS-1, MAX(0, chunk_x))][MIN(NR_CHUNKS-1, MAX(0, chunk_y))];
 }

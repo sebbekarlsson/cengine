@@ -46,11 +46,11 @@ static void move(actor_T* self, float xa, float ya)
     float next_x = (self->x + 8) + xa + (xa > 0 ? 8 : xa < 0 ? -8 : 0);
     float next_y = (self->y + 8) + ya + (ya > 0 ? 8 : ya < 0 ? -8 : 0);
 
-    chunk_T* chunk = ikea_scene_get_chunk(ikea_scene, (next_x)/(32*16), (next_y)/(32*16));
+    chunk_T* chunk = ikea_scene_get_chunk(ikea_scene, next_x, next_y);
 
-    for (int x = 0; x < 16; x++)
+    for (int x = 0; x < CHUNK_SIZE; x++)
     {
-        for (int y = 0; y < 16; y++)
+        for (int y = 0; y < CHUNK_SIZE; y++)
         {
             float bx = chunk->x + (x*32);
             float by = chunk->y + (y*32);
