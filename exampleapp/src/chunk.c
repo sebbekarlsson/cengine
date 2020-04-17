@@ -36,24 +36,29 @@ void chunk_draw(chunk_T* chunk)
         for (int y = 0; y < 16; y++)
         {
             int block = chunk->blocks[x][y];
-            int block_top = chunk->blocks[x][MAX(0,y-1)];
-            int block_right = chunk->blocks[MIN(16-1, x+1)][y];
-            int block_top_right = chunk->blocks[MIN(16-1, x+1)][MAX(0,y-1)];
-            int block_top_left = chunk->blocks[MAX(0, x-1)][MAX(0,y-1)];
 
-            if (block == 0)
+            if (block == BLOCK_AIR)
                 continue;
-
+            
             int tex_x = 0;
-            int tex_y = 2;
-
-            if (block_top == BLOCK_STONE)
-                tex_x = 1;
-
-            if (block_top != BLOCK_STONE && (block_top_right == BLOCK_STONE || block_top_left == BLOCK_STONE))
+            int tex_y = 0;
+        
+            if (block == BLOCK_HOTSTONE)
             {
+                tex_x = 0;
+                tex_y = 0;
+            }
+            else
+            if (block == BLOCK_GRASS)
+            {
+                tex_x = 1;
+                tex_y = 0;
+            }
+            else
+            if (block == BLOCK_STONE)
+            {
+                tex_x = 0;
                 tex_y = 1;
-                tex_x = 7;
             }
 
             glBindVertexArray(scene->VAO);
@@ -70,16 +75,16 @@ void chunk_draw(chunk_T* chunk)
                 APP->shader_program_default,
                 TEXTURE_TILES,
                 chunk->x + (x*32), chunk->y + (y*32), 0,
-                32,
-                32,
+                BLOCK_SIZE,
+                BLOCK_SIZE,
                 255,
                 255,
                 255,
                 1.0f,
                 tex_x,
                 tex_y,
-                8,
-                5,
+                32,
+                32,
                 0,
                 0
             );

@@ -2,12 +2,22 @@
 #define EXAMPLEAPP_CHUNK_H
 
 #define CHUNK_SIZE 16
+#define BLOCK_SIZE 32
 
 enum
 {
-    BLOCK_AIR,
-    BLOCK_STONE
+    BLOCK_AIR = 0,
+    BLOCK_HOTSTONE,
+    BLOCK_STONE,
+    BLOCK_GRASS
 } block_type;
+
+#define NR_BIOMES 2
+enum
+{
+    BIOME_WORLD,
+    BIOME_HELL
+} biome_type;
 
 typedef struct CHUNK_STRUCT
 {

@@ -11,17 +11,28 @@
 
 extern application_T* APP;
 
-extern volatile int SEED;
-
 
 void ikea_scene_tick(scene_T* scene)
 {
     ikea_scene_T* ikea_scene = (ikea_scene_T*) scene;
+    
+    actor_T* actor_camera = (actor_T*) scene->camera;
 
     for (int x = 0; x < NR_CHUNKS; x++)
     {
         for (int y = 0; y < NR_CHUNKS; y++)
         {
+            chunk_T* chunk = ikea_scene->chunks[x][y];
+
+            if (
+                chunk->x + (CHUNK_SIZE*32) < actor_camera->x ||
+                chunk->x > actor_camera->x + APP->width ||
+
+                chunk->y > actor_camera->y + APP->height ||
+                chunk->y + (CHUNK_SIZE*32) < actor_camera->y
+            )
+                continue;
+
             chunk_tick(ikea_scene->chunks[x][y]);
         }
     } 
@@ -60,11 +71,6 @@ void ikea_scene_draw(scene_T* scene)
     glUniform1i(glGetUniformLocation(APP->shader_program_default, "lighting_enabled"), 1);
 }
 
-static int _round(float num)
-{
-    return (int)(num < 0 ? (num - 0.5) : (num + 0.5));
-}
-
 static int mod(int x, int N)
 {
     return (x % N + N) %N;
@@ -80,9 +86,18 @@ void ikea_scene_set_block(ikea_scene_T* ikea_scene, float x, float y, int type)
     chunk->blocks[MIN(CHUNK_SIZE, bx)][MIN(CHUNK_SIZE, by)] = type;
 }
 
+int ikea_scene_get_block(ikea_scene_T* ikea_scene, float x, float y)
+{
+    chunk_T* chunk = ikea_scene_get_chunk(ikea_scene, x, y);
+
+    int bx = mod(x/32, CHUNK_SIZE);
+    int by = mod(y/32, CHUNK_SIZE);
+
+    return chunk->blocks[MIN(CHUNK_SIZE, bx)][MIN(CHUNK_SIZE, by)];
+}
+
 ikea_scene_T* init_ikea_scene()
 {
-    SEED = 300;
     ikea_scene_T* ikea_scene = calloc(1, sizeof(struct IKEA_SCENE_STRUCT));
     scene_T* scene = scene_constructor((scene_T*)ikea_scene);
     scene->draw = ikea_scene_draw;
@@ -92,17 +107,60 @@ ikea_scene_T* init_ikea_scene()
         for (int y = 0; y < NR_CHUNKS; y++)
             ikea_scene->chunks[x][y] = init_chunk(x*32*CHUNK_SIZE, y*32*CHUNK_SIZE);
 
-    scene_add_actor(scene, (actor_T*)init_ikea_actor(0, 0, 0));
+    actor_T* player = scene_add_actor(scene, (actor_T*)init_ikea_actor(0, 0, 0));
+    unsigned int player_placed = 0;
 
     for (int i = 0; i < CHUNK_SIZE*NR_CHUNKS; i++)
     {
-        float h = _round(perlin_get2d(i, 0, 0.006f, 20.0f) * 100);
+        float h = CHUNK_SIZE*NR_CHUNKS;//_round(perlin_get2d(i, 0, 0.006f, 20.0f) * 100);
 
         for (int y = 0; y < h; y++)
         {
+            int block_type = BLOCK_STONE;
+
+            float p = perlin_get2d(i, y, 0.006f, 20.0f, 93819);
+            int bio = (int)(perlin_get2d(0, y, 0.06, 20.0f, 95842) * NR_BIOMES);
+
+            if (bio == BIOME_WORLD)
+            {
+                int nr_blocks = 2;
+
+                int b = (int)(perlin_get2d(i, y, 0.06, 20.0f, 1233) * nr_blocks);
+
+                switch (b)
+                {
+                    case 0: block_type = BLOCK_STONE; break;
+                    case 1: block_type = BLOCK_GRASS; break;
+                }
+            }
+            else
+            if (bio == BIOME_HELL)
+            {
+                int nr_blocks = 2;
+
+                int b = (int)(perlin_get2d(i, y, 0.06, 20.0f, 1233) * nr_blocks);
+
+                switch (b)
+                {
+                    case 0: block_type = BLOCK_STONE; break;
+                    case 1: block_type = BLOCK_HOTSTONE; break;
+                }
+            }
+
+            if (p >= 0.55f)
+                block_type = BLOCK_AIR;
+
             int yy = (CHUNK_SIZE*NR_CHUNKS) - y;
 
-            ikea_scene_set_block(ikea_scene, i*32, yy*32, BLOCK_STONE);
+            ikea_scene_set_block(ikea_scene, i*32, yy*32, block_type);
+
+            // place player on top of first block
+            if (y >= h-1 && !player_placed && block_type != BLOCK_AIR)
+            {
+                player->x = i*32;
+                player->y = ((yy-2)*32);
+                player_placed = 1;
+            }
         }
     }
 

@@ -3,7 +3,7 @@
 #include <cengine/scene.h>
 #include "chunk.h"
 
-#define NR_CHUNKS 32
+#define NR_CHUNKS 64
 
 typedef struct IKEA_SCENE_STRUCT
 {
@@ -15,4 +15,6 @@ typedef struct IKEA_SCENE_STRUCT
 ikea_scene_T* init_ikea_scene();
 
 chunk_T* ikea_scene_get_chunk(ikea_scene_T* ikea_scene, float x, float y);
+
+int ikea_scene_get_block(ikea_scene_T* ikea_scene, float x, float y);
 #endif

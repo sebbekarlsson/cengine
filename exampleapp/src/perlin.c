@@ -18,9 +18,9 @@ static const unsigned char  HASH[] = {
     114,20,218,113,154,27,127,246,250,1,8,198,250,209,92,222,173,21,88,102,219
 };
 
-static int noise2(int x, int y)
+static int noise2(int x, int y, int seed)
 {
-    int  yindex = (y + SEED) % 256;
+    int  yindex = (y + seed) % 256;
     if (yindex < 0)
         yindex += 256;
     int  xindex = (HASH[yindex] + x) % 256;
@@ -40,23 +40,23 @@ static double smooth_inter(double x, double y, double s)
     return lin_inter( x, y, s * s * (3-2*s) );
 }
 
-static double noise2d(double x, double y)
+static double noise2d(double x, double y, int seed)
 {
     const int  x_int = floor( x );
     const int  y_int = floor( y );
     const double  x_frac = x - x_int;
     const double  y_frac = y - y_int;
-    const int  s = noise2( x_int, y_int );
-    const int  t = noise2( x_int+1, y_int );
-    const int  u = noise2( x_int, y_int+1 );
-    const int  v = noise2( x_int+1, y_int+1 );
+    const int  s = noise2( x_int, y_int, seed);
+    const int  t = noise2( x_int+1, y_int, seed);
+    const int  u = noise2( x_int, y_int+1, seed);
+    const int  v = noise2( x_int+1, y_int+1, seed);
     const double  low = smooth_inter( s, t, x_frac );
     const double  high = smooth_inter( u, v, x_frac );
     const double  result = smooth_inter( low, high, y_frac );
     return result;
 }
 
-double perlin_get2d(double x, double y, double freq, int depth)
+double perlin_get2d(double x, double y, double freq, int depth, int seed)
 {
     double  xa = x*freq;
     double  ya = y*freq;
@@ -66,7 +66,7 @@ double perlin_get2d(double x, double y, double freq, int depth)
     for (int i=0; i<depth; i++)
     {
         div += 256 * amp;
-        fin += noise2d( xa, ya ) * amp;
+        fin += noise2d( xa, ya, seed) * amp;
         amp /= 2;
         xa *= 2;
         ya *= 2;

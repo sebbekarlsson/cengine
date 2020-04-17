@@ -73,7 +73,9 @@ void scene_draw(scene_T* scene)
         scene->draw(scene);
 }
 
-void scene_add_actor(scene_T* scene, actor_T* actor)
+actor_T* scene_add_actor(scene_T* scene, actor_T* actor)
 {
     dynamic_list_append(scene->actors, actor);
+
+    return actor;
 }

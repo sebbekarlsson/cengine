@@ -15,18 +15,6 @@ extern application_T* APP;
 extern texture_T* TEXTURE_CHARACTER_TILES;
 
 
-static int mod(int x, int N)
-{
-    return (x % N + N) %N;
-}
-
-static float angle(float x1, float y1, float x2, float y2)
-{
-    float xDiff = x2 - x1;
-    float yDiff = y2 - y1;
-    return atan2(yDiff, xDiff) * 180.0 / GLM_PI;
-}
-
 static void move(actor_T* self, float xa, float ya)
 {
     if (xa != 0 && ya != 0)
@@ -46,7 +34,7 @@ static void move(actor_T* self, float xa, float ya)
     float next_x = (self->x + 8) + xa + (xa > 0 ? 8 : xa < 0 ? -8 : 0);
     float next_y = (self->y + 8) + ya + (ya > 0 ? 8 : ya < 0 ? -8 : 0);
 
-    chunk_T* chunk = ikea_scene_get_chunk(ikea_scene, next_x, next_y);
+    chunk_T* chunk = ikea_scene_get_chunk(ikea_scene, next_x, next_y); 
 
     for (int x = 0; x < CHUNK_SIZE; x++)
     {
@@ -57,7 +45,7 @@ static void move(actor_T* self, float xa, float ya)
 
             int block = chunk->blocks[x][y];
 
-            if (block != BLOCK_STONE)
+            if (block == BLOCK_AIR)
                 continue;
 
             if (self->x+16+xa > bx && self->x+xa < bx + w)
@@ -65,7 +53,9 @@ static void move(actor_T* self, float xa, float ya)
                 if (self->y+16+ya > by && self->y+ya < by + h)
                 {
                     self->dy = 0;
-                    ((ikea_actor_T*)self)->ground = 1;
+                    
+                    if (self->y+ya < by)
+                        ((ikea_actor_T*)self)->ground = 1;
 
                     if ((self->y+16)-ya > by && self->y-ya < by+h)
                         self->dx = 0;
@@ -74,7 +64,7 @@ static void move(actor_T* self, float xa, float ya)
                 }
             }
         } 
-    }
+    } 
 
     self->x += xa;
     self->y += ya;
@@ -84,8 +74,7 @@ static void move(actor_T* self, float xa, float ya)
 void ikea_actor_tick(actor_T* self)
 {
     scene_T* scene = application_get_current_scene(APP);
-
-    ikea_actor_T* ikea_actor = (ikea_actor_T*) self;
+    ikea_scene_T* ikea_scene = (ikea_scene_T*) scene;
 
     camera_set_x(scene->camera, self->x - (APP->width/2) + 16);
     camera_set_y(scene->camera, self->y - (APP->height/2) + 16);
@@ -102,12 +91,53 @@ void ikea_actor_tick(actor_T* self)
 
     self->dy += gravity;
     
+    int left_block = ikea_scene_get_block(ikea_scene, self->x-4, self->y+16);
+    int right_block = ikea_scene_get_block(ikea_scene, self->x+16+4, self->y+16);
+
+    if (
+        left_block != BLOCK_AIR ||
+        right_block != BLOCK_AIR
+    )
+    {
+        ((ikea_actor_T*)self)->ground = 1;
+    }
+    
+    // bounce away if moving to fast against wall 
+    if (self->dx <= -0.7f)
+    {
+        if (left_block)
+            physics_vec2_push(&self->dx, &self->dy, 0.0f, abs(self->dx)*2.0f);
+    }
+
+    // bounce away if moving to fast against wall 
+    if (self->dx >= 0.7f)
+    {
+        if (right_block)
+            physics_vec2_push(&self->dx, &self->dy, 180.0f, abs(self->dx)*2.0f);
+    }
+    
     if (keyboard_check_pressed(GLFW_KEY_RIGHT))
         physics_vec2_push(&self->dx, &self->dy, 0.0f, v * dt);
     if (keyboard_check_pressed(GLFW_KEY_LEFT))
         physics_vec2_push(&self->dx, &self->dy, 180.0f, v * dt);
+
+    // jump
     if (keyboard_check_pressed(GLFW_KEY_UP) &&  ((ikea_actor_T*)self)->ground)
-        physics_vec2_push(&self->dx, &self->dy, 90.0f, 8.0f);
+    {
+        float a = 90.0f;
+        float f = 8.0f;
+        
+        if (left_block)
+            a -= 36.0f;
+        else
+        if (right_block)
+            a += 36.0f;
+
+        if (left_block || right_block)
+            f -= 4.0f;
+
+        physics_vec2_push(&self->dx, &self->dy, a, f);
+    }
 
     if (self->dx > 0)
     {
