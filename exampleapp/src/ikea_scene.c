@@ -96,6 +96,65 @@ int ikea_scene_get_block(ikea_scene_T* ikea_scene, float x, float y)
     return chunk->blocks[MIN(CHUNK_SIZE, bx)][MIN(CHUNK_SIZE, by)];
 }
 
+static void ikea_scene_generate_planet(ikea_scene_T* ikea_scene, float x, float y, int biome)
+{
+    int planet_width = (int)(perlin_get2d(x, y, 0.006, 20.0f, 34887) * 32);
+
+    int center_x = planet_width/2;
+    int center_y = planet_width/2;
+
+    int block_seed = 923819;
+
+    for (int xx = center_x-(planet_width/2); xx < center_x+(planet_width/2); xx++)
+    {
+        for (int yy = center_x-(planet_width/2); yy < center_y+(planet_width/2); yy++)
+        {
+            if (hypot(xx - center_x, yy - center_y) < planet_width/2)
+            {
+                int b_x = (xx*32) + x;
+                int b_y = (yy*32) + y;
+
+                int block_type = BLOCK_STONE;
+
+                if (biome == BIOME_HELL)
+                {
+                    int b = (int)(perlin_get2d(b_x, b_y, 0.006, 20.0f, block_seed)*2);
+
+                    switch (b)
+                    {
+                        case 0: block_type = BLOCK_STONE; break;
+                        case 1: block_type = BLOCK_HOTSTONE; break;
+                    }
+                }
+                else
+                if (biome == BIOME_WORLD)
+                {
+                    int b = (int)(perlin_get2d(b_x, b_y, 0.006, 20.0f, block_seed)*2);
+
+                    switch (b)
+                    {
+                        case 0: block_type = BLOCK_STONE; break;
+                        case 1: block_type = BLOCK_GRASS; break;
+                    }
+                }
+                else
+                if (biome == BIOME_MOON)
+                {
+                    int b = (int)(perlin_get2d(b_x, b_y, 0.006, 20.0f, block_seed)*2);
+
+                    switch (b)
+                    {
+                        case 0: block_type = BLOCK_STONE; break;
+                        case 1: block_type = BLOCK_MOONROCK; break;
+                    }
+                }
+
+                ikea_scene_set_block(ikea_scene, b_x, b_y, block_type);
+            }
+        }
+    }
+}
+
 ikea_scene_T* init_ikea_scene()
 {
     ikea_scene_T* ikea_scene = calloc(1, sizeof(struct IKEA_SCENE_STRUCT));
@@ -110,75 +169,38 @@ ikea_scene_T* init_ikea_scene()
     actor_T* player = scene_add_actor(scene, (actor_T*)init_ikea_actor(0, 0, 0));
     unsigned int player_placed = 0;
 
-    for (int i = 0; i < CHUNK_SIZE*NR_CHUNKS; i++)
+    int planet_map_seed = 488837;
+    float planet_map_freq = 0.6f;
+    float planet_map_depth = 20.0f;
+
+    int planet_type_seed = 643482;
+    float planet_type_freq = 0.06;
+    float planet_type_depth = 20.0f;
+    
+    int x = 128;
+    int y = 128;
+
+    for (int x = 0; x < CHUNK_SIZE*NR_CHUNKS; x++)
     {
-        float h = CHUNK_SIZE*NR_CHUNKS;//_round(perlin_get2d(i, 0, 0.006f, 20.0f) * 100);
+        float h = CHUNK_SIZE*NR_CHUNKS;
 
         for (int y = 0; y < h; y++)
         {
-            float cave_freq = 0.006f;
-            float cave_depth = 20.0f;
-            int block_type = BLOCK_STONE;
+            unsigned int should_generate_planet = ((int)(perlin_get2d(x*32, y*32, planet_map_freq, planet_map_depth, planet_map_seed) * 5)) == 0;
 
-            int bio = ((y*32) / ((NR_CHUNKS*CHUNK_SIZE*BLOCK_SIZE) / NR_BIOMES));
 
-           
-            if (bio == BIOME_SPACE)
+            if (should_generate_planet)
             {
-                int nr_blocks = 2;
-                cave_freq += 0.4f;
-                cave_depth += 0.9f;
+                int biome_type = (int)(perlin_get2d(x*32, y*32, planet_type_freq, planet_type_depth, planet_type_seed) * NR_BIOMES);
+                ikea_scene_generate_planet(ikea_scene, x*32, y*32, biome_type);
 
-                int b = (int)(perlin_get2d(i, y, 0.06, 20.0f, 1233) * nr_blocks);
-
-                switch (b)
+                if (!player_placed)
                 {
-                    case 0: block_type = BLOCK_STONE; break;
-                    case 1: block_type = BLOCK_MOONROCK; break;
+                    printf("player placed\n");
+                    player->x = (x+1)*32;
+                    player->y = (y-16)*32;
+                    player_placed = 1;
                 }
-            }
-            else
-            if (bio == BIOME_WORLD)
-            {
-                int nr_blocks = 2;
-
-                int b = (int)(perlin_get2d(i, y, 0.06, 20.0f, 1233) * nr_blocks);
-
-                switch (b)
-                {
-                    case 0: block_type = BLOCK_STONE; break;
-                    case 1: block_type = BLOCK_GRASS; break;
-                }
-            }
-            else
-            if (bio == BIOME_HELL)
-            {
-                int nr_blocks = 2;
-
-                int b = (int)(perlin_get2d(i, y, 0.06, 20.0f, 1233) * nr_blocks);
-
-                switch (b)
-                {
-                    case 0: block_type = BLOCK_STONE; break;
-                    case 1: block_type = BLOCK_HOTSTONE; break;
-                }
-            }
-
-            float p = perlin_get2d(i, y, cave_freq, cave_depth, 93819);
-
-            if (p >= 0.55f)
-                block_type = BLOCK_AIR;
-
-            int yy = (CHUNK_SIZE*NR_CHUNKS) - y;
-
-            ikea_scene_set_block(ikea_scene, i*32, yy*32, block_type);
-
-            // place player on top of first block
-            if (y >= h-1 && !player_placed && block_type != BLOCK_AIR)
-            {
-                player->x = i*32;
-                player->y = ((yy-2)*32);
-                player_placed = 1;
             }
         }
     }

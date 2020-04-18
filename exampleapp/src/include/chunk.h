@@ -18,7 +18,7 @@ enum
 {
     BIOME_HELL,
     BIOME_WORLD,
-    BIOME_SPACE
+    BIOME_MOON
 } biome_type;
 
 typedef struct CHUNK_STRUCT
