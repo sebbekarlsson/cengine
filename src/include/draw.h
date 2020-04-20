@@ -22,4 +22,16 @@ void draw_texture(
     unsigned int flip_x,
     unsigned int flip_y
 );
+
+void draw_text(
+    unsigned int VAO,
+    unsigned int VBO,
+    unsigned int EBO,
+    unsigned int shader_program,
+    const char* text,
+    const char* fontpath,
+    float x, float y, float z,
+    int size,
+    float r, float g, float b
+);
 #endif

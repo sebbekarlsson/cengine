@@ -16,6 +16,7 @@ typedef struct APPLICATION_STRUCT
 
     // shaders
     unsigned int shader_program_default;
+    unsigned int shader_program_text;
 
     // time
     double delta_time;

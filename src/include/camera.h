@@ -10,6 +10,7 @@ typedef struct CAMERA_STRUCT
     actor_T base;
 
     mat4 view;
+    mat4 projection;
 
     float offset_x;
     float offset_y;

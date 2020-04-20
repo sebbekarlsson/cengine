@@ -67,6 +67,20 @@ void ikea_scene_draw(scene_T* scene)
 
     camera_unbind(scene->camera);
 
+    unsigned int VBO;
+    unsigned int EBO;
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
+
+    glBindVertexArray(scene->VAO);
+
+    glUseProgram(APP->shader_program_default);
+    glUniform1i(glGetUniformLocation(APP->shader_program_default, "lighting_enabled"), 0);
+    draw_text(scene->VAO, VBO, EBO, APP->shader_program_default, "hello", "/usr/share/fonts/truetype/lato/Lato-Black.ttf", 8, 42, 0, 16, 255, 255, 255);
+
+    glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &EBO);
+
     glUseProgram(APP->shader_program_default);
     glUniform1i(glGetUniformLocation(APP->shader_program_default, "lighting_enabled"), 1);
 }
@@ -177,9 +191,6 @@ ikea_scene_T* init_ikea_scene()
     float planet_type_freq = 0.06;
     float planet_type_depth = 20.0f;
     
-    int x = 128;
-    int y = 128;
-
     for (int x = 0; x < CHUNK_SIZE*NR_CHUNKS; x++)
     {
         float h = CHUNK_SIZE*NR_CHUNKS;

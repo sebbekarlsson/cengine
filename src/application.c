@@ -17,6 +17,11 @@ application_T* init_application(int width, int height, const char* title)
         "/usr/local/share/cengine/res/shader/fragment.glsl" 
     );
 
+    app->shader_program_text = init_shader_program_from_file(
+        "/usr/local/share/cengine/res/shader/text_vertex.glsl",        
+        "/usr/local/share/cengine/res/shader/text_fragment.glsl" 
+    );
+
     app->current_time = application_get_time();
     app->last_time = app->current_time; 
 
