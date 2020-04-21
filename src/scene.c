@@ -61,6 +61,8 @@ void scene_draw(scene_T* scene)
 
         actor_T* actor = (actor_T*) scene->actors->items[i];
 
+        actor_draw_default(actor);
+
         if (actor->draw)
             actor->draw(actor);
     }

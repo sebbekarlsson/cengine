@@ -30,4 +30,6 @@ typedef struct ACTOR_STRUCT
 actor_T* init_actor(float x, float y, float z);
 
 actor_T* actor_constructor(actor_T* actor, float x, float y, float z);
+
+void actor_draw_default(actor_T* actor);
 #endif
