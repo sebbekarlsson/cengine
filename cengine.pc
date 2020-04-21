@@ -1,0 +1,10 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+includedir=${prefix}/include
+libdir=${exec_prefix}/lib
+
+Name: cengine
+Description: Game Engine
+Version: 1.0.0
+Cflags: -I${includedir} -I/usr/local/include/freetype2 -I/usr/include/freetype2 
+Libs: -g -Wall -lm -ldl -fPIC -rdynamic -lglfw -lGLEW -lGL -lcglm -lpng -I/usr/local/include/freetype2 -I/usr/include/freetype2 -lfreetype -lcengine -std=c99

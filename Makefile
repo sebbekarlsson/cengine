@@ -1,14 +1,15 @@
 exec = a.out
 sources = $(wildcard src/*.c)
 objects = $(sources:.c=.o)
-flags = -g -Wall -lm -ldl -fPIC -rdynamic -lglfw -lGLEW -lGL -lcglm -lpng -I/usr/local/include/freetype2 -I/usr/include/freetype2 -lfreetype -std=c99
+flags = `pkg-config --cflags cengine`
+libs = `pkg-config --libs cengine`
 
 
 libcengine.a: $(objects)
 	ar rcs $@ $^
 
 %.o: %.c include/%.h
-	gcc -c $(flags) $< -o $@
+	gcc -c $(flags) $< -o $@ $(libs)
 
 install:
 	mkdir -p /usr/local/share/cengine/res
@@ -18,7 +19,7 @@ install:
 	mkdir -p /usr/local/include/cengine
 	cp -r ./src/include/* /usr/local/include/cengine/.
 	cp ./libcengine.a /usr/local/lib/.
-	cp ./cengine.out /usr/local/bin/cengine
+	cp ./cengine.pc /usr/share/pkgconfig/
 
 clean:
 	-rm *.out
