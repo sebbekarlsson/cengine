@@ -189,6 +189,8 @@ ikea_actor_T* init_ikea_actor(float x, float y, float z)
         texture->atlas_height = 11;
         texture->shift_x = 4;
         texture->shift_y = i;
+        texture->width = 16;
+        texture->height = 16;
 
         sprite_add_texture(actor->sprite, texture);
     }
