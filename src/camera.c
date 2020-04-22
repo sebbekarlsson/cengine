@@ -20,6 +20,8 @@ camera_T* init_camera(float x, float y, float z)
     camera->offset_y = 0;
     camera->offset_z = 0;
 
+    camera->fov = 45.0f;
+
     camera->reverse = 0;
 
     return camera;

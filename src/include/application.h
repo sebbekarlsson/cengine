@@ -12,6 +12,9 @@ typedef struct APPLICATION_STRUCT
 
     int width;
     int height;
+
+    int dimensions;
+
     GLFWwindow* window;
 
     // shaders
@@ -24,7 +27,7 @@ typedef struct APPLICATION_STRUCT
     double last_time; 
 } application_T;
 
-application_T* init_application(int width, int height, const char* title);
+application_T* init_application(int width, int height, int dimensions, const char* title);
 
 scene_T* application_add_scene(application_T* application, scene_T* scene);
 

@@ -16,7 +16,7 @@ extern application_T* APP;
  */
 int main(int argc, char* argv[])
 {
-    APP = init_application(640, 480, "App"); 
+    APP = init_application(640, 480, 2, "App"); 
 
     TEXTURE_TILES = texture_get_id("res/image/tiles.png");
     TEXTURE_CHARACTER_TILES = texture_get("res/image/oga_sheet.png");

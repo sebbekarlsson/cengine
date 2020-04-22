@@ -2,7 +2,7 @@
 #include "include/shader.h"
 
 
-application_T* init_application(int width, int height, const char* title)
+application_T* init_application(int width, int height, int dimensions, const char* title)
 {
     application_T* app = calloc(1, sizeof(struct APPLICATION_STRUCT));
     app->scene_index = 0;
@@ -10,6 +10,9 @@ application_T* init_application(int width, int height, const char* title)
 
     app->width = width;
     app->height = height;
+
+    app->dimensions = dimensions;
+
     app->window = init_window(app->width, app->height, title);
 
     app->shader_program_default = init_shader_program_from_file(
