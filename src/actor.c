@@ -39,6 +39,7 @@ actor_T* actor_constructor(actor_T* actor, float x, float y, float z)
 void actor_draw_default(actor_T* actor)
 {
     if (actor->sprite)
+    {
         sprite_draw(
             actor->sprite,
             actor->VBO,
@@ -48,4 +49,5 @@ void actor_draw_default(actor_T* actor)
             actor->y,
             actor->z
         );
+    }
 }

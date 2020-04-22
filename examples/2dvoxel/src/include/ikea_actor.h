@@ -1,5 +1,5 @@
-#ifndef EXAMPLEAPP_IKEA_ACTOR_H
-#define EXAMPLEAPP_IKEA_ACTOR_H
+#ifndef VOXEL2D_IKEA_ACTOR_H
+#define VOXEL2D_IKEA_ACTOR_H
 #include <cengine/actor.h>
 
 

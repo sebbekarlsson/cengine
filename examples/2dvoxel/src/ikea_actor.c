@@ -165,9 +165,6 @@ void ikea_actor_tick(actor_T* self)
 
 void ikea_actor_draw(actor_T* self)
 {
-    sprite_draw(self->sprite, self->VBO, self->EBO, APP->shader_program_default, self->x, self->y, self->z);
-
-    glUseProgram(APP->shader_program_default);
     glUniform3fv(glGetUniformLocation(APP->shader_program_default, "light_pos"), 1, (float[]){self->x, self->y, self->z});
 }
 

@@ -17,7 +17,7 @@ int cengine_main(int argc, char* argv[])
 
     glUseProgram(APP->shader_program_text);
     GLuint projection_location_text = glGetUniformLocation(APP->shader_program_text, "projection");
-
+    
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -31,7 +31,11 @@ int cengine_main(int argc, char* argv[])
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glm_ortho(0.0f, APP->width, APP->height, 0, -10.0f, 100.0f, scene->camera->projection);
+
+        glUseProgram(APP->shader_program_default);
         glUniformMatrix4fv(projection_location, 1, GL_FALSE, (const GLfloat*) scene->camera->projection);
+
+        glUseProgram(APP->shader_program_text);
         glUniformMatrix4fv(projection_location_text, 1, GL_FALSE, (const GLfloat*) scene->camera->projection);
 
         scene_tick(scene);

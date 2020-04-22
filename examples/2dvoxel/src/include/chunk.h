@@ -1,5 +1,5 @@
-#ifndef EXAMPLEAPP_CHUNK_H
-#define EXAMPLEAPP_CHUNK_H
+#ifndef VOXEL2D_CHUNK_H
+#define VOXEL2D_CHUNK_H
 
 #define CHUNK_SIZE 16
 #define BLOCK_SIZE 32

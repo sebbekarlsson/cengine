@@ -1,8 +1,9 @@
 startdir=$(pwd)
+appname=$1
 
 make && sudo make install
 
-cd exampleapp
+cd examples/$appname
 make clean
 make && ./a.out
 

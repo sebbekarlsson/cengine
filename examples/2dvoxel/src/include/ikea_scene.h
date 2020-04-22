@@ -1,5 +1,5 @@
-#ifndef EXAMPLEAPP_IKEA_SCENE_H
-#define EXAMPLEAPP_IKEA_SCENE_H
+#ifndef VOXEL2D_IKEA_SCENE_H
+#define VOXEL2D_IKEA_SCENE_H
 #include <cengine/scene.h>
 #include "chunk.h"
 

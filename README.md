@@ -5,7 +5,7 @@
 ## Running the example
 > To run the example game:
 ```bash
-./run_example.sh
+./run_example.sh 2dvoxel
 ```
 
 ## Creating an application
