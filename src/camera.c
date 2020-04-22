@@ -51,6 +51,7 @@ void camera_bind(camera_T* camera)
     );
 
     camera_send_view_to_shader(camera, APP->shader_program_default);
+    camera_send_view_to_shader(camera, APP->shader_program_text);
 }
 
 /**
@@ -66,10 +67,13 @@ void camera_unbind(camera_T* camera)
     glm_translate(camera->view, (vec3){a->x, a->y, a->z});
     
     camera_send_view_to_shader(camera, APP->shader_program_default);
+    camera_send_view_to_shader(camera, APP->shader_program_text);
 }
 
 void camera_send_view_to_shader(camera_T* camera, unsigned int shader_program)
 {
+    glUseProgram(shader_program);
+
     glUniformMatrix4fv(
         glGetUniformLocation(
             shader_program,

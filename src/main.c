@@ -13,8 +13,9 @@ extern application_T* APP;
 int cengine_main(int argc, char* argv[])
 {
     glUseProgram(APP->shader_program_default);
-
     GLuint projection_location = glGetUniformLocation(APP->shader_program_default, "projection");
+
+    glUseProgram(APP->shader_program_text);
     GLuint projection_location_text = glGetUniformLocation(APP->shader_program_text, "projection");
 
     glEnable(GL_BLEND);

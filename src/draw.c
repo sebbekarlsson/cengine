@@ -1,5 +1,9 @@
 #include "include/draw.h"
 #include "include/text.h"
+#include "include/application.h"
+
+
+extern application_T* APP;
 
 
 void draw_texture(
@@ -175,7 +179,6 @@ void draw_text(
     unsigned int VAO,
     unsigned int VBO,
     unsigned int EBO,
-    unsigned int shader_program,
     const char* text,
     const char* fontpath,
     float x, float y, float z,
@@ -183,8 +186,6 @@ void draw_text(
     float r, float g, float b
 )
 {
-    glUseProgram(shader_program);
-
     dynamic_list_T* characters = get_text_characters_from_text(text, fontpath, size);
 
     float scale = 3.0f;
@@ -203,7 +204,7 @@ void draw_text(
         draw_character(
             VBO,
             EBO,
-            shader_program,
+            APP->shader_program_text,
             character,
             xpos, ypos, z,
             255, 255, 255, 1.0f,

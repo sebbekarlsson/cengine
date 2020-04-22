@@ -18,7 +18,7 @@ application_T* init_application(int width, int height, const char* title)
     );
 
     app->shader_program_text = init_shader_program_from_file(
-        "/usr/local/share/cengine/res/shader/text_vertex.glsl",        
+        "/usr/local/share/cengine/res/shader/vertex.glsl",        
         "/usr/local/share/cengine/res/shader/text_fragment.glsl" 
     );
 
