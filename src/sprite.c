@@ -44,7 +44,7 @@ void sprite_draw(sprite_T* sprite, unsigned int VBO, unsigned int EBO, unsigned 
     draw_texture(
         VBO,
         EBO,
-        shader_program,
+        APP->shader_program_default,
         texture->id,
         x, y, z,
         texture->width,

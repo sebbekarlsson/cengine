@@ -173,6 +173,7 @@ static void draw_character(
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
     glBindVertexArray(0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void draw_text(
@@ -212,10 +213,7 @@ void draw_text(
         );
 
         x += (character->advance >> 6) * scale;
-    }
-
-    glBindVertexArray(0);
-    glBindTexture(GL_TEXTURE_2D, 0);
+    } 
 
     text_character_list_free(characters);
 }
