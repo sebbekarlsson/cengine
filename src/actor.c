@@ -28,6 +28,10 @@ actor_T* actor_constructor(actor_T* actor, float x, float y, float z)
     actor->dy = 0;
     actor->dz = 0;
 
+    actor->rx = 0;
+    actor->ry = 0;
+    actor->rz = 0;
+
     actor->friction = 0;
 
     actor->tick = (void*) 0;

@@ -20,9 +20,21 @@ camera_T* init_camera(float x, float y, float z)
     camera->offset_y = 0;
     camera->offset_z = 0;
 
-    camera->fov = 45.0f;
+    camera->fov = 100.0f;
 
     camera->reverse = 0;
+
+    switch (APP->dimensions)
+    {
+        case 2: glm_ortho(0.0f, APP->width, APP->height, 0, -10.0f, 100.0f, camera->projection); break;
+        case 3: glm_perspective(
+                    glm_rad(camera->fov),
+                    (float) APP->width / (float) APP->height,
+                    0.01f, 1000.0f,
+                    camera->projection
+                ); break;
+        default: { printf("Cannot create an application with %d dimensions.\n", APP->dimensions); exit(1); } break;
+    }
 
     return camera;
 }

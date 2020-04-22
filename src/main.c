@@ -28,19 +28,9 @@ int cengine_main(int argc, char* argv[])
         glfwGetFramebufferSize(APP->window, &APP->width, &APP->height);
 
         glViewport(0, 0, APP->width, APP->height);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        switch (APP->dimensions)
-        {
-            case 2: glm_ortho(0.0f, APP->width, APP->height, 0, -10.0f, 100.0f, scene->camera->projection); break;
-            case 3: glm_perspective(
-                        glm_rad(scene->camera->fov),
-                        (float) APP->width / (float) APP->height,
-                        0.01f, 1000.0f,
-                        scene->camera->projection
-                    ); break;
-            default: { printf("Cannot create an application with %d dimensions.\n", APP->dimensions); exit(1); } break;
-        }
+        glClearColor(0, 0, 0, 1);
+        glEnable(GL_DEPTH_TEST);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 
         glUseProgram(APP->shader_program_default);
         glUniformMatrix4fv(projection_location, 1, GL_FALSE, (const GLfloat*) scene->camera->projection);
