@@ -76,7 +76,7 @@ void ikea_scene_draw(scene_T* scene)
 
     glUseProgram(APP->shader_program_default);
     glUniform1i(glGetUniformLocation(APP->shader_program_default, "lighting_enabled"), 0);
-    draw_text(scene->VAO, VBO, EBO, "hello", "/usr/share/fonts/truetype/crosextra/Carlito-Regular.ttf", 128, 128, 0, 24, 255, 255, 255);
+    draw_text(scene->VAO, VBO, EBO, "hello", "/usr/share/fonts/truetype/crosextra/Carlito-Regular.ttf", 128, 128, 1, 24, 255, 255, 255);
 
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
