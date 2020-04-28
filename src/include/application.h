@@ -20,6 +20,10 @@ typedef struct APPLICATION_STRUCT
     // shaders
     unsigned int shader_program_default;
     unsigned int shader_program_text;
+    unsigned int shader_program_color;
+
+    // booleans
+    unsigned int debug_mode;
 
     // time
     double delta_time;

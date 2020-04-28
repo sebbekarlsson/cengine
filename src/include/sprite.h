@@ -2,6 +2,7 @@
 #define CENGINE_SPRITE_H
 #include "dynamic_list.h"
 #include "texture.h"
+#include "draw.h"
 
 typedef struct SPRITE_STRUCT
 {
@@ -12,6 +13,8 @@ typedef struct SPRITE_STRUCT
     unsigned int animated;
     unsigned int flip_x;
     unsigned int flip_y;
+    
+    draw_program_T* draw_program;
 } sprite_T;
 
 sprite_T* init_sprite();
@@ -22,7 +25,7 @@ void sprite_add_texture(sprite_T* sprite, texture_T* texture);
 
 texture_T* sprite_get_current_texture(sprite_T* sprite);
 
-void sprite_draw(sprite_T* sprite, unsigned int VBO, unsigned int EBO, unsigned int shader_program, float x, float y, float z);
+void sprite_draw(sprite_T* sprite, float x, float y, float z);
 
 void sprite_tick(sprite_T* sprite);
 #endif

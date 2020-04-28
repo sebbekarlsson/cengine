@@ -6,6 +6,12 @@
 
 char* read_file(const char* filename)
 {
+    if (!file_exists(filename))
+    {
+        printf("File `%s` does not exist.\n", filename);
+        exit(1);
+    }
+
     char * buffer = 0;
     long length;
     FILE * f = fopen (filename, "rb");

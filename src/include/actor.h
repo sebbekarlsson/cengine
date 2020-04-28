@@ -23,8 +23,14 @@ typedef struct ACTOR_STRUCT
 
     float friction;
 
+    float hitbox_width;
+    float hitbox_height;
+    float hitbox_depth;
+
     void (*tick)(struct ACTOR_STRUCT* self);
     void (*draw)(struct ACTOR_STRUCT* self);
+
+    draw_program_T* draw_program;
 } actor_T;
 
 actor_T* init_actor(float x, float y, float z);

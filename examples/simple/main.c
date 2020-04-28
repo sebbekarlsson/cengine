@@ -27,7 +27,8 @@ scene_T* init_main_scene()
 
 int main(int argc, char* argv[])
 {
-    APP = init_application(640, 480, 2, "App"); 
+    APP = init_application(640, 480, 2, "App");
+    APP->debug_mode = 1;
 
     application_add_scene(APP, init_main_scene());
 

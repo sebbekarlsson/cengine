@@ -1,5 +1,6 @@
 #ifndef VOXEL2D_CHUNK_H
 #define VOXEL2D_CHUNK_H
+#include <cengine/draw.h>
 
 #define CHUNK_SIZE 16
 #define BLOCK_SIZE 32
@@ -26,6 +27,7 @@ typedef struct CHUNK_STRUCT
     int blocks[CHUNK_SIZE][CHUNK_SIZE];
     int x;
     int y;
+    draw_program_T* draw_program;
 } chunk_T;
 
 chunk_T* init_chunk(int x, int y);

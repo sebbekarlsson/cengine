@@ -27,6 +27,9 @@ scene_T* scene_constructor(scene_T* scene)
 
     scene->camera = init_camera(0, 0, 0);
 
+    scene->draw_program = init_draw_program(APP->shader_program_default);
+    scene->draw_program_text = init_draw_program(APP->shader_program_text);
+
     return scene;
 }
 

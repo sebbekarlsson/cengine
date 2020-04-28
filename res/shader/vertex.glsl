@@ -13,6 +13,7 @@ uniform int flip_x;
 uniform int flip_y;
 
 out vec2 fragment_texcoord;
+out vec4 fragment_color;
 
 flat out int texture_shift_x;
 flat out int texture_shift_y;
@@ -24,4 +25,6 @@ void main()
 
     texture_shift_x = int(ceil(in_texture_shift_x));
     texture_shift_y = int(ceil(in_texture_shift_y));
+
+    fragment_color = color;
 }

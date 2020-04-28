@@ -1,6 +1,5 @@
 #include "include/ikea_scene.h"
 #include "include/ikea_actor.h"
-#include "include/ground_actor.h"
 #include "include/perlin.h"
 #include <cengine/texture.h>
 #include <cengine/window.h>
@@ -67,19 +66,11 @@ void ikea_scene_draw(scene_T* scene)
 
     camera_unbind(scene->camera);
 
-    unsigned int VBO;
-    unsigned int EBO;
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-
     glBindVertexArray(scene->VAO);
 
     glUseProgram(APP->shader_program_default);
     glUniform1i(glGetUniformLocation(APP->shader_program_default, "lighting_enabled"), 0);
-    draw_text(scene->VAO, VBO, EBO, "hello", "/usr/share/fonts/truetype/crosextra/Carlito-Regular.ttf", 128, 128, 1, 24, 255, 255, 255);
-
-    glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
+    draw_text(scene->draw_program_text, "hello", "/usr/share/fonts/truetype/crosextra/Carlito-Regular.ttf", 128, 128, 1, 24, 255, 255, 255);
 
     glUseProgram(APP->shader_program_default);
     glUniform1i(glGetUniformLocation(APP->shader_program_default, "lighting_enabled"), 1);

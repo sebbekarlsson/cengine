@@ -3,6 +3,8 @@ out vec4 FragColor;
 
 in vec2 fragment_texcoord;
 
+in vec4 fragment_color;
+
 flat in int texture_shift_x;
 flat in int texture_shift_y;
 

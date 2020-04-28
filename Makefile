@@ -12,6 +12,7 @@ libcengine.a: $(objects)
 	gcc -c $(flags) $< -o $@ $(libs)
 
 install:
+	cp ./cengine.pc /usr/share/pkgconfig/
 	mkdir -p /usr/local/share/cengine/res
 	cp -r ./res/* /usr/local/share/cengine/res
 	make
@@ -19,7 +20,6 @@ install:
 	mkdir -p /usr/local/include/cengine
 	cp -r ./src/include/* /usr/local/include/cengine/.
 	cp ./libcengine.a /usr/local/lib/.
-	cp ./cengine.pc /usr/share/pkgconfig/
 
 clean:
 	-rm *.out

@@ -3,6 +3,7 @@
 #include "dynamic_list.h"
 #include "actor.h"
 #include "camera.h"
+#include "draw.h"
 
 
 typedef struct SCENE_STRUCT
@@ -15,6 +16,9 @@ typedef struct SCENE_STRUCT
     void (*draw)(struct SCENE_STRUCT* self);
 
     camera_T* camera;
+
+    draw_program_T* draw_program;
+    draw_program_T* draw_program_text;
 } scene_T;
 
 scene_T* init_scene();

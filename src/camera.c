@@ -66,6 +66,7 @@ void camera_bind(camera_T* camera)
 
     camera_send_view_to_shader(camera, APP->shader_program_default);
     camera_send_view_to_shader(camera, APP->shader_program_text);
+    camera_send_view_to_shader(camera, APP->shader_program_color);
 }
 
 /**
@@ -82,6 +83,7 @@ void camera_unbind(camera_T* camera)
     
     camera_send_view_to_shader(camera, APP->shader_program_default);
     camera_send_view_to_shader(camera, APP->shader_program_text);
+    camera_send_view_to_shader(camera, APP->shader_program_color);
 }
 
 void camera_send_view_to_shader(camera_T* camera, unsigned int shader_program)

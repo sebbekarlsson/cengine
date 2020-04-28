@@ -20,6 +20,8 @@ chunk_T* init_chunk(int x, int y)
             chunk->blocks[i][j] = 0;
     }
 
+    chunk->draw_program = init_draw_program(APP->shader_program_default);
+
     return chunk;
 }
 
@@ -30,6 +32,7 @@ void chunk_tick(chunk_T* chunk)
 void chunk_draw(chunk_T* chunk)
 {
     scene_T* scene = application_get_current_scene(APP);
+
 
     for (int x = 0; x < 16; x++)
     {
@@ -69,16 +72,8 @@ void chunk_draw(chunk_T* chunk)
 
             glBindVertexArray(scene->VAO);
 
-            unsigned int VBO;
-            unsigned int EBO;
-            
-            glGenBuffers(1, &VBO);
-            glGenBuffers(1, &EBO);
-
             draw_texture(
-                VBO,
-                EBO,
-                APP->shader_program_default,
+                chunk->draw_program,
                 TEXTURE_TILES,
                 chunk->x + (x*32), chunk->y + (y*32), 0,
                 BLOCK_SIZE,
@@ -94,9 +89,6 @@ void chunk_draw(chunk_T* chunk)
                 0,
                 0
             );
-
-            glDeleteBuffers(1, &VBO);
-            glDeleteBuffers(1, &EBO); 
         }
     }
 }

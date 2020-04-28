@@ -3,10 +3,25 @@
 #include <GL/glew.h>
 #include <cglm/cglm.h>
 
+
+typedef struct DRAW_PROGRAM_STRUCT
+{
+    unsigned int VBO;
+    unsigned int EBO;
+    unsigned int shader_program;
+    unsigned int generated;
+} draw_program_T;
+
+draw_program_T* init_draw_program(unsigned int shader_program);
+
+draw_program_T* draw_program_genbuffers(draw_program_T* draw_program);
+
+draw_program_T* draw_program_deletebuffers(draw_program_T* draw_program);
+
+void draw_program_free(draw_program_T* draw_program);
+
 void draw_texture(
-    unsigned int VBO,
-    unsigned int EBO,
-    unsigned int shader_program,
+    draw_program_T* draw_program,
     unsigned int texture,
     float x, float y, float z,
     int width,
@@ -24,13 +39,18 @@ void draw_texture(
 );
 
 void draw_text(
-    unsigned int VAO,
-    unsigned int VBO,
-    unsigned int EBO,
+    draw_program_T* draw_program,
     const char* text,
     const char* fontpath,
     float x, float y, float z,
     int size,
     float r, float g, float b
+);
+
+void draw_line(
+    draw_program_T* draw_program,
+    float x, float y, float z,
+    float endx, float endy, float endz,
+    float r, float g, float b, float a
 );
 #endif

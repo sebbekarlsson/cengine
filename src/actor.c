@@ -34,21 +34,43 @@ actor_T* actor_constructor(actor_T* actor, float x, float y, float z)
 
     actor->friction = 0;
 
+    actor->hitbox_width = 16;
+    actor->hitbox_height = 16;
+    actor->hitbox_depth = 16;
+
     actor->tick = (void*) 0;
     actor->draw = (void*) 0;
+
+    actor->draw_program = init_draw_program(APP->shader_program_color);
 
     return actor;
 }
 
 void actor_draw_default(actor_T* actor)
 {
+    scene_T* scene = application_get_current_scene(APP);
+
+    if (APP->debug_mode)
+    {
+        draw_line(
+            actor->draw_program,
+            actor->x, actor->y, actor->z,
+            actor->x + actor->hitbox_width, actor->y, actor->z,
+            255, 0, 0, 1.0f 
+        );
+
+        draw_line(
+            actor->draw_program,
+            actor->x, actor->y, actor->z,
+            actor->x, actor->y + actor->hitbox_height, actor->z,
+            255, 0, 0, 1.0f 
+        );
+    }
+
     if (actor->sprite)
     {
         sprite_draw(
             actor->sprite,
-            actor->VBO,
-            actor->EBO,
-            APP->shader_program_default,
             actor->x,
             actor->y,
             actor->z

@@ -1,5 +1,4 @@
 #include "include/sprite.h"
-#include "include/draw.h"
 #include "include/application.h"
 
 extern application_T* APP;
@@ -15,6 +14,8 @@ sprite_T* init_sprite()
     sprite->animated = 1;
     sprite->flip_x = 0;
     sprite->flip_y = 0;
+    sprite->draw_program = init_draw_program(APP->shader_program_default);
+    draw_program_genbuffers(sprite->draw_program);
 
     return sprite;
 }
@@ -37,14 +38,12 @@ texture_T* sprite_get_current_texture(sprite_T* sprite)
     return sprite->textures->items[sprite->index];
 }
 
-void sprite_draw(sprite_T* sprite, unsigned int VBO, unsigned int EBO, unsigned int shader_program, float x, float y, float z)
+void sprite_draw(sprite_T* sprite, float x, float y, float z)
 {
     texture_T* texture = (texture_T*)sprite_get_current_texture(sprite);
 
     draw_texture(
-        VBO,
-        EBO,
-        APP->shader_program_default,
+        sprite->draw_program,
         texture->id,
         x, y, z,
         texture->width,
