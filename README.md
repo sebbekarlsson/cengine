@@ -13,6 +13,7 @@
 ```bash
 sudo make install
 ```
+> NOTE: the install script requires you to have `python` installed.
 
 ## Creating an application
 > After installing the engine, you can generate a project using the
