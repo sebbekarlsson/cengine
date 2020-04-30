@@ -8,6 +8,12 @@
 ./run_example.sh 2dvoxel
 ```
 
+## Installing
+> To compile & install the engine, simply run:
+```bash
+sudo make install
+```
+
 ## Creating an application
 > After installing the engine, you can generate a project using the
 > cengine generator. The command is called `ceg`.  
