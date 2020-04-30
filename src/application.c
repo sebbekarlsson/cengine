@@ -8,12 +8,9 @@ application_T* init_application(int width, int height, int dimensions, const cha
     app->scene_index = 0;
     app->scenes = init_dynamic_list(sizeof(struct SCENE_STRUCT*));
 
-    app->width = width;
-    app->height = height;
-
     app->dimensions = dimensions;
 
-    app->window = init_window(app->width, app->height, title);
+    app->window = init_window(width, height, title);
 
     app->shader_program_default = init_shader_program_from_file(
         "/usr/local/share/cengine/res/shader/vertex.glsl",        

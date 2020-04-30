@@ -10,12 +10,9 @@ typedef struct APPLICATION_STRUCT
     int scene_index;
     dynamic_list_T* scenes;
 
-    int width;
-    int height;
-
     int dimensions;
 
-    GLFWwindow* window;
+    window_T* window;
 
     // shaders
     unsigned int shader_program_default;

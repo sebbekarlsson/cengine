@@ -76,8 +76,8 @@ void ikea_actor_tick(actor_T* self)
     scene_T* scene = application_get_current_scene(APP);
     ikea_scene_T* ikea_scene = (ikea_scene_T*) scene;
 
-    camera_set_x(scene->camera, self->x - (APP->width/2) + 16);
-    camera_set_y(scene->camera, self->y - (APP->height/2) + 16);
+    camera_set_x(scene->camera, self->x - (RES_WIDTH/2) + 16);
+    camera_set_y(scene->camera, self->y - (RES_HEIGHT/2) + 16);
 
     double dt = APP->delta_time;
     

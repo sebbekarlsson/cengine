@@ -8,10 +8,10 @@ extern application_T* APP;
 
 int keyboard_check_pressed(int key)
 {
-    return glfwGetKey(APP->window, key) == GLFW_PRESS;
+    return glfwGetKey(APP->window->window, key) == GLFW_PRESS;
 }
 
 int keyboard_check_released(int key)
 {
-    return glfwGetKey(APP->window, key) == GLFW_RELEASE;
+    return glfwGetKey(APP->window->window, key) == GLFW_RELEASE;
 }

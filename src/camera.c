@@ -26,10 +26,10 @@ camera_T* init_camera(float x, float y, float z)
 
     switch (APP->dimensions)
     {
-        case 2: glm_ortho(0.0f, APP->width, APP->height, 0, -10.0f, 100.0f, camera->projection); break;
+        case 2: glm_ortho(0.0f, APP->window->width, APP->window->height, 0, -10.0f, 100.0f, camera->projection); break;
         case 3: glm_perspective(
                     glm_rad(camera->fov),
-                    (float) APP->width / (float) APP->height,
+                    (float) APP->window->width / (float) APP->window->height,
                     0.01f, 1000.0f,
                     camera->projection
                 ); break;

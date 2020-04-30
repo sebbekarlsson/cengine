@@ -12,8 +12,8 @@ scene_T* init_main_scene()
     texture_T* texture = texture_get("res/banana.png");
 
     actor_T* actor = init_actor(
-        (APP->width / 2) - texture->width / 2,
-        (APP->height / 2) - texture->height / 2,
+        (APP->window->width / 2) - texture->width / 2,
+        (APP->window->height / 2) - texture->height / 2,
         0
     );
 

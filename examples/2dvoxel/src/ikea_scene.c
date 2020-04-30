@@ -25,9 +25,9 @@ void ikea_scene_tick(scene_T* scene)
 
             if (
                 chunk->x + (CHUNK_SIZE*32) < actor_camera->x ||
-                chunk->x > actor_camera->x + APP->width ||
+                chunk->x > actor_camera->x + APP->window->width ||
 
-                chunk->y > actor_camera->y + APP->height ||
+                chunk->y > actor_camera->y + APP->window->height ||
                 chunk->y + (CHUNK_SIZE*32) < actor_camera->y
             )
                 continue;
@@ -53,9 +53,9 @@ void ikea_scene_draw(scene_T* scene)
 
             if (
                 chunk->x + (CHUNK_SIZE*32) < actor_camera->x ||
-                chunk->x > actor_camera->x + APP->width ||
+                chunk->x > actor_camera->x + APP->window->width ||
 
-                chunk->y > actor_camera->y + APP->height ||
+                chunk->y > actor_camera->y + APP->window->height ||
                 chunk->y + (CHUNK_SIZE*32) < actor_camera->y
             )
                 continue;
