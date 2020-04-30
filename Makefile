@@ -20,6 +20,7 @@ install:
 	mkdir -p /usr/local/include/cengine
 	cp -r ./src/include/* /usr/local/include/cengine/.
 	cp ./libcengine.a /usr/local/lib/.
+	./install_generator.sh
 
 clean:
 	-rm *.out
