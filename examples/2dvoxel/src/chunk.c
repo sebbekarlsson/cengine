@@ -33,6 +33,21 @@ void chunk_draw(chunk_T* chunk)
 {
     scene_T* scene = application_get_current_scene(APP);
 
+    glBindVertexArray(scene->VAO);
+
+    draw_line(
+        scene->draw_program_color,
+        chunk->x, chunk->y, 0,
+        chunk->x + CHUNK_SIZE * BLOCK_SIZE, chunk->y, 0,
+        255, 0, 0, 1.0f 
+    );
+
+    draw_line(
+        scene->draw_program_color,
+        chunk->x, chunk->y + CHUNK_SIZE * BLOCK_SIZE, 0,
+        chunk->x, chunk->y, 0,
+        0, 255, 0, 1.0f 
+    );
 
     for (int x = 0; x < 16; x++)
     {

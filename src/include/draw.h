@@ -20,6 +20,13 @@ draw_program_T* draw_program_deletebuffers(draw_program_T* draw_program);
 
 void draw_program_free(draw_program_T* draw_program);
 
+void draw_quad(
+    draw_program_T* draw_program,
+    int width, int height,
+    float x, float y, float z,
+    float r, float g, float b, float a    
+);
+
 void draw_texture(
     draw_program_T* draw_program,
     unsigned int texture,

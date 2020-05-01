@@ -19,6 +19,7 @@ typedef struct SCENE_STRUCT
 
     draw_program_T* draw_program;
     draw_program_T* draw_program_text;
+    draw_program_T* draw_program_color;
 } scene_T;
 
 scene_T* init_scene();

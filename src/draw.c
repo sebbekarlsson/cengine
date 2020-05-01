@@ -43,6 +43,84 @@ void draw_program_free(draw_program_T* draw_program)
     free(draw_program);
 }
 
+void draw_quad(
+    draw_program_T* draw_program,
+    int width, int height,
+    float x, float y, float z,
+    float r, float g, float b, float a    
+)
+{
+    unsigned int should_delete;
+
+    if (!draw_program->generated)
+    {
+        should_delete = 1;
+        draw_program_genbuffers(draw_program);
+    }
+
+    glUseProgram(draw_program->shader_program);
+
+    int shift_x = 0;
+    int shift_y = 0;
+
+    float vertices[] =
+    {
+        // positions            // colors                                // texture coords
+        0.0f,   0.0f,    0.0f,  r / 255.0f, g / 255.0f, b / 255.0f, a,   0.0f, 0.0f,    shift_x, shift_y,   // top right
+        width,   0.0f,    0.0f,  r / 255.0f, g / 255.0f, b / 255.0f, a,   1.0f, 0.0f,   shift_x, shift_y,  // bottom right
+        width,   height,  0.0f,  r / 255.0f, g / 255.0f, b / 255.0f, a,   1.0f, 1.0f,   shift_x, shift_y,  // bottom left
+        0.0f,   height,  0.0f,  r / 255.0f, g / 255.0f, b / 255.0f, a,   0.0f, 1.0f,    shift_x, shift_y   // top left
+    };
+
+    unsigned int indices [] =
+    {
+        0, 1, 3,   // first triangle
+        1, 2, 3    // second triangle
+    };
+
+    glBindBuffer(GL_ARRAY_BUFFER, draw_program->VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, draw_program->EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    glUniform1i(glGetUniformLocation(draw_program->shader_program, "u_texture"), 0); 
+
+    // translate
+    mat4 m = GLM_MAT4_IDENTITY_INIT;
+    glm_translate(m, (vec3){x, y, z});
+    
+    GLuint model_location = glGetUniformLocation(draw_program->shader_program, "model");
+    glUniformMatrix4fv(model_location, 1, GL_FALSE, (const GLfloat*) m);
+
+    // position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // color attribute
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 11 * sizeof(float), (void*)(3* sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+    // texcoords
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 11 * sizeof(float), (void*)(7 * sizeof(float)));
+    glEnableVertexAttribArray(2);
+
+    // shiftX
+    glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, 11 * sizeof(float), (void*)(9 * sizeof(float)));
+    glEnableVertexAttribArray(3);
+
+    // shiftY
+    glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, 11 * sizeof(float), (void*)(10 * sizeof(float)));
+    glEnableVertexAttribArray(4);
+
+    glUniform3fv(glGetUniformLocation(draw_program->shader_program, "world_pos"), 1, (float[]){ x, y, z });
+
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+    if (should_delete)
+        draw_program_deletebuffers(draw_program);
+}
+
 void draw_texture(
     draw_program_T* draw_program,
     unsigned int texture,

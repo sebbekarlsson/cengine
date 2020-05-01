@@ -5,6 +5,7 @@
 #define CHUNK_SIZE 16
 #define BLOCK_SIZE 32
 
+#define NR_BLOCKS 5
 enum
 {
     BLOCK_AIR = 0,

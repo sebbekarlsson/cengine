@@ -48,8 +48,6 @@ actor_T* actor_constructor(actor_T* actor, float x, float y, float z)
 
 void actor_draw_default(actor_T* actor)
 {
-    scene_T* scene = application_get_current_scene(APP);
-
     if (APP->debug_mode)
     {
         draw_line(
