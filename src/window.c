@@ -56,12 +56,25 @@ window_T* init_window(int width, int height, const char* title)
 
     fprintf(stdout, "Status: Using GLEW %s\n", glewGetString(GLEW_VERSION));
 
-
     glViewport(0, 0, w->width, w->height);
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glfwSwapInterval(1);
 
     return w;
+}
+
+void window_free(window_T* window)
+{
+    printf("Destroying window...\n");
+
+    glfwDestroyWindow(window->window);
+
+    printf("Deallocating window...\n");
+
+    free(window);
 }
 
 void window_recalc(window_T* window, int width, int height)

@@ -13,6 +13,8 @@ extern application_T* APP;
 
 int cengine_main(int argc, char* argv[])
 {
+    printf("cengine is starting...\n");
+
     glUseProgram(APP->shader_program_default);
     GLuint projection_location = glGetUniformLocation(APP->shader_program_default, "projection");
 
@@ -20,13 +22,12 @@ int cengine_main(int argc, char* argv[])
     GLuint projection_location_text = glGetUniformLocation(APP->shader_program_text, "projection");
 
     glUseProgram(APP->shader_program_color);
-    GLuint projection_location_color = glGetUniformLocation(APP->shader_program_color, "projection");
+    GLuint projection_location_color = glGetUniformLocation(APP->shader_program_color, "projection"); 
     
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+    printf("Calculating framebuffer...\n");
     unsigned int framebuffer = window_generate_framebuffer(APP->window); 
-
+    
+    printf("Entering main loop.\n");
     while (!glfwWindowShouldClose(APP->window->window))
     {
         scene_T* scene = application_get_current_scene(APP);
@@ -77,9 +78,14 @@ int cengine_main(int argc, char* argv[])
         APP->last_time = APP->current_time;
     }
 
-    glfwDestroyWindow(APP->window->window);
-    free(APP->window);
+    printf("Exit main loop.\n");
+    
+    application_free(APP);
+    
+    printf("Terminating glfw..\n");
     glfwTerminate();
+
+    printf("Done.\n");
 
     return 0;
 }

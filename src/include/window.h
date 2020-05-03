@@ -20,6 +20,8 @@ typedef struct WINDOW_STRUCT
 
 window_T* init_window(int width, int height, const char* title);
 
+void window_free(window_T* window);
+
 void window_recalc(window_T* window, int width, int height);
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);

@@ -39,6 +39,13 @@ camera_T* init_camera(float x, float y, float z)
     return camera;
 }
 
+void camera_free(camera_T* camera)
+{
+    //actor_free(&camera->base);
+    actor_free((actor_T*) camera);
+    free(camera);
+}
+
 /**
  * Bind camera, called when you want to render something within the scope of
  * a camera, if used; make sure to call camera_unbind when done.

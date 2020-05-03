@@ -14,6 +14,8 @@ typedef struct SCENE_STRUCT
 
     void (*tick)(struct SCENE_STRUCT* self);
     void (*draw)(struct SCENE_STRUCT* self);
+    void (*pre_draw)(struct SCENE_STRUCT* self);
+    void (*free)(struct SCENE_STRUCT* self);
 
     camera_T* camera;
 
@@ -25,6 +27,8 @@ typedef struct SCENE_STRUCT
 scene_T* init_scene();
 
 scene_T* scene_constructor(scene_T* scene);
+
+void scene_free(scene_T* scene);
 
 void scene_tick(scene_T* scene);
 

@@ -10,6 +10,4 @@ unsigned int init_shader_program_from_file(
 unsigned int init_shader(GLenum shader_type, const char* src);
 
 unsigned int init_shader_from_file(GLenum shader_type, const char* pathname);
-
-void setup_shaders();
 #endif

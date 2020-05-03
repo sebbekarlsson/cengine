@@ -57,8 +57,3 @@ unsigned int init_shader_from_file(GLenum shader_type, const char* pathname)
 
     return shader;
 }
-
-void setup_shaders()
-{
-    
-}

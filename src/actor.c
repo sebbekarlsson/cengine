@@ -40,10 +40,23 @@ actor_T* actor_constructor(actor_T* actor, float x, float y, float z)
 
     actor->tick = (void*) 0;
     actor->draw = (void*) 0;
+    actor->free = (void*) 0;
 
     actor->draw_program = init_draw_program(APP->shader_program_color);
 
     return actor;
+}
+
+void actor_free(actor_T* actor)
+{
+    if (actor->sprite)
+    {
+        printf("Calling sprite_free...\n");
+        sprite_free(actor->sprite);
+    }
+
+    printf("Deallocating draw program within actor...\n");
+    free(actor->draw_program);
 }
 
 void actor_draw_default(actor_T* actor)

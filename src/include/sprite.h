@@ -21,6 +21,8 @@ sprite_T* init_sprite();
 
 sprite_T* init_sprite_with_texture(texture_T* texture);
 
+void sprite_free(sprite_T* sprite);
+
 void sprite_add_texture(sprite_T* sprite, texture_T* texture);
 
 texture_T* sprite_get_current_texture(sprite_T* sprite);

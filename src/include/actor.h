@@ -29,6 +29,7 @@ typedef struct ACTOR_STRUCT
 
     void (*tick)(struct ACTOR_STRUCT* self);
     void (*draw)(struct ACTOR_STRUCT* self);
+    void (*free)(struct ACTOR_STRUCT* self);
 
     draw_program_T* draw_program;
 } actor_T;
@@ -36,6 +37,8 @@ typedef struct ACTOR_STRUCT
 actor_T* init_actor(float x, float y, float z);
 
 actor_T* actor_constructor(actor_T* actor, float x, float y, float z);
+
+void actor_free(actor_T* actor);
 
 void actor_draw_default(actor_T* actor);
 #endif

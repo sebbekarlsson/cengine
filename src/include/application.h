@@ -30,6 +30,8 @@ typedef struct APPLICATION_STRUCT
 
 application_T* init_application(int width, int height, int dimensions, const char* title);
 
+void application_free(application_T* app);
+
 scene_T* application_add_scene(application_T* application, scene_T* scene);
 
 scene_T* application_get_current_scene(application_T* application);

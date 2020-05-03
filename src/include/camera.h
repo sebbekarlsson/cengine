@@ -23,6 +23,8 @@ typedef struct CAMERA_STRUCT
 
 camera_T* init_camera(float x, float y, float z);
 
+void camera_free(camera_T* camera);
+
 void camera_bind(camera_T* camera);
 
 void camera_unbind(camera_T* camera);

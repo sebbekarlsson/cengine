@@ -2,13 +2,14 @@
 > A simple Game Engine framework,  
 > to make games with in C.
 
-## Running the example
-> To run the example game:
-```bash
-./run_example.sh 2dvoxel
-```
-
 ## Installing
+### Requirements
+* glfw3
+* cglm
+* libpng
+* libfreetype6-dev 
+
+### Compile & Install
 > To compile & install the engine, simply run:
 ```bash
 sudo make install
@@ -23,3 +24,9 @@ sudo make install
 ceg myprojectname
 ```
 > This will generate a project for you.
+
+## Running the example
+> To run the example game:
+```bash
+./run_example.sh 2dvoxel
+```

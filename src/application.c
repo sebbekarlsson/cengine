@@ -35,6 +35,40 @@ application_T* init_application(int width, int height, int dimensions, const cha
     return app;
 }
 
+void application_free(application_T* app)
+{
+    printf("Trying to deallocate %ld scenes...\n", app->scenes->size);
+
+    for (int i = 0; i < app->scenes->size; i++)
+    {
+        scene_T* scene = (scene_T*) app->scenes->items[i];
+
+        if (!scene->free)
+        {
+            printf("WARNING: Scene `%d` is missing a free method.\n", i);
+            scene_free(scene);
+            continue;
+        }
+
+        scene->free(scene);
+        scene_free(scene);
+    }
+
+    printf("Calling window_free...\n");
+    
+    window_free(app->window);
+    
+    printf("Deallocating shaders...\n");
+
+    glDeleteProgram(app->shader_program_default);
+    glDeleteProgram(app->shader_program_text);
+    glDeleteProgram(app->shader_program_color);
+
+    printf("Deallocating application...\n");
+
+    free(app);
+}
+
 scene_T* application_add_scene(application_T* application, scene_T* scene)
 {
     dynamic_list_append(application->scenes, scene);

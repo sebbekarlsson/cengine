@@ -28,6 +28,16 @@ sprite_T* init_sprite_with_texture(texture_T* texture)
     return sprite;
 }
 
+void sprite_free(sprite_T* sprite)
+{
+    // TODO: free textures list.
+    
+    printf("Deallocating draw program within sprite...\n");
+    draw_program_free(sprite->draw_program);
+
+    free(sprite);
+}
+
 void sprite_add_texture(sprite_T* sprite, texture_T* texture)
 {
     dynamic_list_append(sprite->textures, texture);
