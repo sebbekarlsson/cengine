@@ -1,7 +1,7 @@
 #ifndef CENGINE_KEYBOARD_H
 #define CENGINE_KEYBOARD_H
 
-#define KEYBOARD_NR_KEYS 300
+#define KEYBOARD_NR_KEYS 400
 
 typedef struct KEYBOARD_STRUCT {
     int keys[KEYBOARD_NR_KEYS];
