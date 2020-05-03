@@ -9,11 +9,14 @@
 
 
 extern application_T* APP;
+extern keyboard_T* KEYBOARD;
 
 
 int cengine_main(int argc, char* argv[])
 {
     printf("cengine is starting...\n");
+
+    KEYBOARD = init_keyboard();
 
     glUseProgram(APP->shader_program_default);
     GLuint projection_location = glGetUniformLocation(APP->shader_program_default, "projection");
@@ -69,7 +72,9 @@ int cengine_main(int argc, char* argv[])
 
         glfwSwapBuffers(APP->window->window);
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        keyboard_reset_keys(KEYBOARD); 
 
         glfwPollEvents();
 

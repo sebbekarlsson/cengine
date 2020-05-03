@@ -1,21 +1,17 @@
 #include "include/window.h"
 #include "include/application.h"
+#include "include/keyboard.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 
 extern application_T* APP;
+extern keyboard_T* KEYBOARD;
 
 
 static void window_error_callback(int error, const char* description)
 {
     fprintf(stderr, "Error: %s\n", description);
-}
-
-static void window_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, GLFW_TRUE);
 }
 
 window_T* init_window(int width, int height, const char* title)
@@ -105,6 +101,11 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     window_recalc(APP->window, width, height);
     // glViewport((width / 2) - (WINDOW_WIDTH / 2), (height / 2) - (WINDOW_HEIGHT / 2), 640, 480);
+}
+
+void window_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    KEYBOARD->keys[key] = action;
 }
 
 unsigned int window_generate_framebuffer()

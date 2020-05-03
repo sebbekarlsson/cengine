@@ -26,6 +26,8 @@ void window_recalc(window_T* window, int width, int height);
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
+void window_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+
 unsigned int window_generate_framebuffer();
 
 double window_mouse_get_x();
