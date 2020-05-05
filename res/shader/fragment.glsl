@@ -57,5 +57,5 @@ void main()
         shade = vec4(brightness_mod, brightness_mod, brightness_mod, SHADE_OPACITY);
     }
 
-    FragColor = vec4(1.0) * texture2D(u_texture, vec2((fragment_texcoord.x + x) * scalar_x,  (fragment_texcoord.y * scalar_y) + y * scalar_y)) * (vec4(1, 1, 1, 1) + shade);
+    FragColor = fragment_color * texture2D(u_texture, vec2((fragment_texcoord.x + x) * scalar_x,  (fragment_texcoord.y * scalar_y) + y * scalar_y)) * (vec4(1, 1, 1, 1) + shade);
 }

@@ -318,7 +318,7 @@ void draw_text(
 
     dynamic_list_T* characters = get_text_characters_from_text(text, fontpath, size);
 
-    float scale = 3.0f;
+    float scale = 1.0f;
 
     for (int i = 0; i < characters->size; i++)
     {
