@@ -35,4 +35,6 @@ void scene_tick(scene_T* scene);
 void scene_draw(scene_T* scene);
 
 actor_T* scene_add_actor(scene_T* scene, actor_T* actor);
+
+void scene_remove_actor(scene_T* scene, actor_T* actor);
 #endif

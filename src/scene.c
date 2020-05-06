@@ -122,3 +122,13 @@ actor_T* scene_add_actor(scene_T* scene, actor_T* actor)
 
     return actor;
 }
+
+static void _actor_free(void* actor)
+{
+    actor_free((actor_T*) actor);
+}
+
+void scene_remove_actor(scene_T* scene, actor_T* actor)
+{
+    dynamic_list_remove(scene->actors, actor, _actor_free);
+}
