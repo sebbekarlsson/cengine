@@ -5,6 +5,11 @@ flags = `pkg-config --cflags cengine`
 libs = `pkg-config --libs cengine`
 
 
+ifeq ($(PREFIX),)
+    PREFIX := /usr/local
+endif
+
+
 libcengine.a: $(objects)
 	ar rcs $@ $^
 
@@ -12,14 +17,22 @@ libcengine.a: $(objects)
 	gcc -c $(flags) $< -o $@ $(libs)
 
 install:
-	cp ./cengine.pc /usr/share/pkgconfig/
-	mkdir -p /usr/local/share/cengine/res
-	cp -r ./res/* /usr/local/share/cengine/res
+	install -d $(DESTDIR)$(PREFIX)/lib/
+	install -d $(DESTDIR)$(PREFIX)/include/cengine
+	install -d $(DESTDIR)$(PREFIX)/share/cengine/
+	install -d $(DESTDIR)$(PREFIX)/share/cengine/res
+	install -d $(DESTDIR)$(PREFIX)/share/pkgconfig/
+	\
+	cp ./cengine.pc $(DESTDIR)$(PREFIX)/share/pkgconfig/
+	cp -r ./res/* $(DESTDIR)$(PREFIX)/share/cengine/res
+	\
 	make
 	make libcengine.a
-	mkdir -p /usr/local/include/cengine
-	cp -r ./src/include/* /usr/local/include/cengine/.
-	cp ./libcengine.a /usr/local/lib/.
+	\
+	cp -r ./src/include/* $(DESTDIR)$(PREFIX)/include/cengine/.
+	\
+	install -m 644 ./libcengine.a $(DESTDIR)$(PREFIX)/lib/.
+	\
 	./install_generator.sh
 
 clean:
