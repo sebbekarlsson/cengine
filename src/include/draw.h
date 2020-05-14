@@ -45,6 +45,25 @@ void draw_texture(
     unsigned int flip_y
 );
 
+void draw_texture_rotated(
+    draw_program_T* draw_program,
+    unsigned int texture,
+    float x, float y, float z,
+    int width,
+    int height,
+    float r,
+    float g,
+    float b,
+    float a,
+    int shift_x,
+    int shift_y,
+    int atlas_width,
+    int atlas_height,
+    unsigned int flip_x,
+    unsigned int flip_y,
+    float rotation
+);
+
 void draw_text(
     draw_program_T* draw_program,
     const char* text,
