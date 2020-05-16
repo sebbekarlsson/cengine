@@ -35,18 +35,30 @@ void chunk_draw(chunk_T* chunk)
 
     glBindVertexArray(scene->VAO);
 
-    draw_line(
-        scene->draw_program_color,
-        chunk->x, chunk->y, 0,
-        chunk->x + CHUNK_SIZE * BLOCK_SIZE, chunk->y, 0,
-        255, 0, 0, 1.0f 
-    );
+    draw_options_T draw_options_line = DRAW_OPTIONS_INIT;
+    draw_options_line.x = chunk->x;
+    draw_options_line.y = chunk->y;
+    draw_options_line.z = 0;
+    draw_options_line.endx = chunk->x + CHUNK_SIZE * BLOCK_SIZE;
+    draw_options_line.endy = chunk->y;
+    draw_options_line.r = 255;
 
     draw_line(
         scene->draw_program_color,
-        chunk->x, chunk->y + CHUNK_SIZE * BLOCK_SIZE, 0,
-        chunk->x, chunk->y, 0,
-        0, 255, 0, 1.0f 
+        draw_options_line
+    );
+
+    draw_options_line.x = chunk->x;
+    draw_options_line.y = chunk->y;
+    draw_options_line.z = 0;
+    draw_options_line.endx = chunk->x;
+    draw_options_line.endy = chunk->y + CHUNK_SIZE * BLOCK_SIZE;
+    draw_options_line.r = 0;
+    draw_options_line.g = 255;
+
+    draw_line(
+        scene->draw_program_color,
+        draw_options_line
     );
 
     for (int x = 0; x < 16; x++)

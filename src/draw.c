@@ -250,9 +250,7 @@ void draw_text(
 
 void draw_line(
     draw_program_T* draw_program,
-    float x, float y, float z,
-    float endx, float endy, float endz,
-    float r, float g, float b, float a
+    draw_options_T draw_options
 )
 {
     glUseProgram(draw_program->shader_program);
@@ -265,6 +263,7 @@ void draw_line(
         draw_program_genbuffers(draw_program);
     }
 
+    // translate
     mat4 m = GLM_MAT4_IDENTITY_INIT;
     glm_translate(m, (vec3){0, 0, 0});
     
@@ -273,6 +272,17 @@ void draw_line(
             draw_program->shader_program, "model"
         ), 1, GL_FALSE, (const GLfloat*) m
     );
+    
+    float x = draw_options.x;
+    float y = draw_options.y;
+    float z = draw_options.z;
+    float endx = draw_options.endx;
+    float endy = draw_options.endy;
+    float endz = draw_options.endz;
+    float r = draw_options.r;
+    float g = draw_options.g;
+    float b = draw_options.b;
+    float a = draw_options.a;
 
     float VERTICES[] =
     {

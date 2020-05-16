@@ -32,9 +32,12 @@ typedef struct DRAW_OPTIONS_STRUCT
     int font_size;
     const char* text;
     const char* fontpath;
+    float endx;
+    float endy;
+    float endz;
 } draw_options_T;
 
-#define DRAW_OPTIONS_INIT {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1.0f, 0, 0, 0, 0, 0, 0, 0, 0}
+#define DRAW_OPTIONS_INIT {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1.0f, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 
 void draw_options_get_matrix(draw_options_T draw_options, mat4 dest);
 #endif

@@ -23,8 +23,6 @@ void draw_text(
 
 void draw_line(
     draw_program_T* draw_program,
-    float x, float y, float z,
-    float endx, float endy, float endz,
-    float r, float g, float b, float a
+    draw_options_T draw_options
 );
 #endif

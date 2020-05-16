@@ -61,23 +61,6 @@ void actor_free(actor_T* actor)
 
 void actor_draw_default(actor_T* actor)
 {
-    if (APP->debug_mode)
-    {
-        draw_line(
-            actor->draw_program,
-            actor->x, actor->y, actor->z,
-            actor->x + actor->hitbox_width, actor->y, actor->z,
-            255, 0, 0, 1.0f 
-        );
-
-        draw_line(
-            actor->draw_program,
-            actor->x, actor->y, actor->z,
-            actor->x, actor->y + actor->hitbox_height, actor->z,
-            255, 0, 0, 1.0f 
-        );
-    }
-
     if (actor->sprite)
     {
         sprite_draw(
