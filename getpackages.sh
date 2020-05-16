@@ -30,3 +30,5 @@ make
 cd ..
 
 cd $prevdir
+mkdir -p lib
+cp $(find ./packages/ | grep "\.so\|\.a") lib/.
