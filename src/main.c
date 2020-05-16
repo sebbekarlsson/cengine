@@ -50,7 +50,7 @@ int cengine_main(int argc, char* argv[])
 
         glViewport(0, 0, RES_WIDTH, RES_HEIGHT);
 
-        glClearColor(0, 0, 0, 1);
+        glClearColor(scene->r / 255.0f, scene->g / 255.0f, scene->b / 255.0f, 1);
         glEnable(GL_DEPTH_TEST);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 

@@ -124,7 +124,7 @@ ikea_scene_T* init_ikea_scene()
         for (int y = 0; y < NR_CHUNKS; y++)
             ikea_scene->chunks[x][y] = init_chunk(x*32*CHUNK_SIZE, y*32*CHUNK_SIZE);
 
-    actor_T* player = scene_add_actor(scene, (actor_T*)init_ikea_actor(0, 0, -1));
+    actor_T* player = scene_add_actor(scene, (actor_T*)init_ikea_actor(0, 0, 2));
     unsigned int player_placed = 0;
 
     for (int x = 0; x < CHUNK_SIZE*NR_CHUNKS; x++)

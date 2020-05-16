@@ -33,6 +33,10 @@ scene_T* scene_constructor(scene_T* scene)
     scene->draw_program_text = init_draw_program(APP->shader_program_text);
     scene->draw_program_color = init_draw_program(APP->shader_program_color);
 
+    scene->r = 0;
+    scene->g = 0;
+    scene->b = 0;
+
     return scene;
 }
 
