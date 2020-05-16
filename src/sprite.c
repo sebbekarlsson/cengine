@@ -52,22 +52,26 @@ void sprite_draw(sprite_T* sprite, float x, float y, float z)
 {
     texture_T* texture = (texture_T*)sprite_get_current_texture(sprite);
 
+    draw_options_T draw_options = DRAW_OPTIONS_INIT;
+    draw_options.texture = texture->id;
+    draw_options.x = x;
+    draw_options.y = y;
+    draw_options.z = z;
+    draw_options.width = texture->width;
+    draw_options.height = texture->height;
+    draw_options.r = 255;
+    draw_options.g = 255;
+    draw_options.b = 255;
+    draw_options.shift_x = texture->shift_x;
+    draw_options.shift_y = texture->shift_y;
+    draw_options.atlas_width = texture->atlas_width;
+    draw_options.atlas_height = texture->atlas_height;
+    draw_options.flip_x = sprite->flip_x;
+    draw_options.flip_y = sprite->flip_y;
+
     draw_texture(
         sprite->draw_program,
-        texture->id,
-        x, y, z,
-        texture->width,
-        texture->height,
-        255,
-        255,
-        255,
-        1.0f,
-        texture->shift_x,
-        texture->shift_y,
-        texture->atlas_width,
-        texture->atlas_height,
-        sprite->flip_x,
-        sprite->flip_y
+        draw_options
     );
 }
 

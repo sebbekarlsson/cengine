@@ -87,22 +87,23 @@ void chunk_draw(chunk_T* chunk)
 
             glBindVertexArray(scene->VAO);
 
+            draw_options_T draw_options = DRAW_OPTIONS_INIT;
+            draw_options.texture = TEXTURE_TILES;
+            draw_options.x = chunk->x + (x*32);
+            draw_options.y = chunk->y + (y*32);
+            draw_options.width = BLOCK_SIZE;
+            draw_options.height = BLOCK_SIZE;
+            draw_options.r = 255;
+            draw_options.g = 255;
+            draw_options.b = 255;
+            draw_options.shift_x = tex_x;
+            draw_options.shift_y = tex_y;
+            draw_options.atlas_width = 32;
+            draw_options.atlas_height = 32;
+
             draw_texture(
                 chunk->draw_program,
-                TEXTURE_TILES,
-                chunk->x + (x*32), chunk->y + (y*32), 0,
-                BLOCK_SIZE,
-                BLOCK_SIZE,
-                255,
-                255,
-                255,
-                1.0f,
-                tex_x,
-                tex_y,
-                32,
-                32,
-                0,
-                0
+                draw_options
             );
         }
     }

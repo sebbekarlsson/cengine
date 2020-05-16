@@ -2,66 +2,18 @@
 #define CENGINE_DRAW_H
 #include <GL/glew.h>
 #include <cglm/cglm.h>
+#include "draw_program.h"
+#include "draw_options.h"
 
-
-typedef struct DRAW_PROGRAM_STRUCT
-{
-    unsigned int VBO;
-    unsigned int EBO;
-    unsigned int shader_program;
-    unsigned int generated;
-} draw_program_T;
-
-draw_program_T* init_draw_program(unsigned int shader_program);
-
-draw_program_T* draw_program_genbuffers(draw_program_T* draw_program);
-
-draw_program_T* draw_program_deletebuffers(draw_program_T* draw_program);
-
-void draw_program_free(draw_program_T* draw_program);
 
 void draw_quad(
     draw_program_T* draw_program,
-    int width, int height,
-    float x, float y, float z,
-    float r, float g, float b, float a    
+    draw_options_T draw_options
 );
 
 void draw_texture(
     draw_program_T* draw_program,
-    unsigned int texture,
-    float x, float y, float z,
-    int width,
-    int height,
-    float r,
-    float g,
-    float b,
-    float a,
-    int shift_x,
-    int shift_y,
-    int atlas_width,
-    int atlas_height,
-    unsigned int flip_x,
-    unsigned int flip_y
-);
-
-void draw_texture_rotated(
-    draw_program_T* draw_program,
-    unsigned int texture,
-    float x, float y, float z,
-    int width,
-    int height,
-    float r,
-    float g,
-    float b,
-    float a,
-    int shift_x,
-    int shift_y,
-    int atlas_width,
-    int atlas_height,
-    unsigned int flip_x,
-    unsigned int flip_y,
-    float rotation
+    draw_options_T draw_options
 );
 
 void draw_text(
