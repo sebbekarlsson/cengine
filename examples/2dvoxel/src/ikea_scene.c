@@ -70,7 +70,19 @@ void ikea_scene_draw(scene_T* scene)
 
     glUseProgram(APP->shader_program_default);
     glUniform1i(glGetUniformLocation(APP->shader_program_default, "lighting_enabled"), 0);
-    draw_text(scene->draw_program_text, "hello", "/usr/share/fonts/truetype/crosextra/Carlito-Regular.ttf", 128, 128, 1, 24, 255, 255, 255);
+
+    draw_options_T draw_options = DRAW_OPTIONS_INIT;
+    draw_options.font_size = 24;
+    draw_options.text = "hello";
+    draw_options.x = 128;
+    draw_options.y = 128;
+    draw_options.z = 1;
+    draw_options.r = 255;
+    draw_options.g = 255;
+    draw_options.b = 255;
+    draw_options.fontpath = "/usr/share/fonts/truetype/crosextra/Carlito-Regular.ttf";
+
+    draw_text(scene->draw_program_text, draw_options);
 
     glUseProgram(APP->shader_program_default);
     glUniform1i(glGetUniformLocation(APP->shader_program_default, "lighting_enabled"), 1);

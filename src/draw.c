@@ -201,11 +201,7 @@ static void draw_character(
 
 void draw_text(
     draw_program_T* draw_program,
-    const char* text,
-    const char* fontpath,
-    float x, float y, float z,
-    int size,
-    float r, float g, float b
+    draw_options_T draw_options
 )
 {
     unsigned int should_delete;
@@ -216,9 +212,12 @@ void draw_text(
         draw_program_genbuffers(draw_program);
     }
 
-    dynamic_list_T* characters = get_text_characters_from_text(text, fontpath, size);
+    dynamic_list_T* characters = get_text_characters_from_text(draw_options.text, draw_options.fontpath, draw_options.font_size);
 
     float scale = 1.0f;
+
+    float x = draw_options.x;
+    float y = draw_options.y;
 
     for (int i = 0; i < characters->size; i++)
     {
@@ -235,8 +234,8 @@ void draw_text(
             draw_program->EBO,
             draw_program->shader_program,
             character,
-            xpos, ypos, z,
-            r, g, b, 1.0f,
+            xpos, ypos, draw_options.z,
+            draw_options.r, draw_options.g, draw_options.b, draw_options.a,
             w, h
         );
 

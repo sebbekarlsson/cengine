@@ -18,11 +18,7 @@ void draw_texture(
 
 void draw_text(
     draw_program_T* draw_program,
-    const char* text,
-    const char* fontpath,
-    float x, float y, float z,
-    int size,
-    float r, float g, float b
+    draw_options_T draw_options
 );
 
 void draw_line(
