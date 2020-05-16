@@ -29,6 +29,14 @@ cd glew-2.1.0
 make
 cd ..
 
+git clone git://github.com/glennrp/libpng.git
+cd libpng
+./configure
+cmake .
+make
+cd ..
+
 cd $prevdir
 mkdir -p lib
-cp $(find ./packages/ | grep "\.so\|\.a") lib/.
+cp $(find ./packages/ | grep "\.so$\|\.a$") lib/.
+cp ./libcengine.a lib/.
