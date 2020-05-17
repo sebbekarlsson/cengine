@@ -4,10 +4,11 @@
 #include <png.h>
 
 
-texture_T* init_texture(unsigned int id, int width, int height)
+texture_T* init_texture(unsigned int id, uint32_t* data, int width, int height)
 {
     texture_T* texture = calloc(1, sizeof(struct TEXTURE_STRUCT));
     texture->id = id;
+    texture->data = data;
     texture->width = width;
     texture->height = height;
     texture->shift_x = 0;
@@ -21,11 +22,36 @@ texture_T* init_texture(unsigned int id, int width, int height)
 unsigned int texture_get_id(const char* pathname)
 {
     texture_T* texture = texture_get(pathname);
-    unsigned int id =texture->id;
+    unsigned int id = texture->id;
     
     free(texture);
 
     return id;
+}
+
+unsigned int texture_get_cut_id(texture_T* texture, int x, int y, int w, int h)
+{
+    unsigned int cut_texture;
+    glGenTextures(1, &cut_texture);
+    glBindTexture(GL_TEXTURE_2D, cut_texture);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, texture->width);
+    glPixelStorei(GL_UNPACK_SKIP_PIXELS, x);
+    glPixelStorei(GL_UNPACK_SKIP_ROWS, y);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture->data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+    glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
+    glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
+
+    return cut_texture;
 }
 
 texture_T* texture_get(const char* pathname)
@@ -84,20 +110,11 @@ texture_T* texture_get(const char* pathname)
 
     glGenerateMipmap(GL_TEXTURE_2D);
 
-    return init_texture(texture, image.width, image.height);
+    return init_texture(texture, image_pixels, image.width, image.height);
 }
 
 void texture_free(texture_T* texture)
 {
     glDeleteTextures(1, &(texture->id));
     free(texture);
-}
-
-texture_coords_T* init_texture_coords(int x, int y)
-{
-    texture_coords_T* texture_coords = calloc(1, sizeof(struct TEXTURE_COORDS_STRUCT));
-    texture_coords->x = x;
-    texture_coords->y = y;
-
-    return texture_coords;
 }

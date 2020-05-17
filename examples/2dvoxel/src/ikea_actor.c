@@ -181,7 +181,7 @@ ikea_actor_T* init_ikea_actor(float x, float y, float z)
     
     for (int i = 0; i < 6; i++)
     {
-        texture_T* texture = init_texture(TEXTURE_CHARACTER_TILES->id, TEXTURE_CHARACTER_TILES->width, TEXTURE_CHARACTER_TILES->height);
+        texture_T* texture = init_texture(TEXTURE_CHARACTER_TILES->id, (void*) 0, TEXTURE_CHARACTER_TILES->width, TEXTURE_CHARACTER_TILES->height);
         texture->atlas_width = 6;
         texture->atlas_height = 11;
         texture->shift_x = 4;
