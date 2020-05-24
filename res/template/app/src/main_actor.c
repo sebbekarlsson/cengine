@@ -1,4 +1,5 @@
 #include "include/main_actor.h"
+#include <cengine/draw_options.h>
 
 
 main_actor_T* init_main_actor(float x, float y, float z)
@@ -24,17 +25,36 @@ void main_actor_draw(actor_T* self)
 {
 
     // Just drawing a cross for demonstrational purposes
+    
+    draw_options_T horizontal = DRAW_OPTIONS_INIT;
+    horizontal.x = self->x;
+    horizontal.y = self->y + self->hitbox_height / 2;
+    horizontal.z = self->z;
+    horizontal.endx = self->x + self->hitbox_width;
+    horizontal.endy = self->y + self->hitbox_height / 2;
+    horizontal.endz = self->z;
+    horizontal.r = 255;
+    horizontal.g = 0;
+    horizontal.b = 0;
 
     draw_line(
         self->draw_program,
-        self->x, self->y + self->hitbox_height/2, self->z,
-        self->x + self->hitbox_width, self->y + self->hitbox_height/2, self->z,
-        255, 0, 0, 1.0f 
+        horizontal
     );
+
+    draw_options_T vertical = DRAW_OPTIONS_INIT;
+    vertical.x = self->x + self->hitbox_width / 2;
+    vertical.y = self->y;
+    vertical.z = self->z;
+    vertical.endx = self->x + self->hitbox_width/2;
+    vertical.endy = self->y + self->hitbox_height;
+    vertical.endz = self->z;
+    vertical.r = 255;
+    vertical.g = 0;
+    vertical.b = 0;
+
     draw_line(
         self->draw_program,
-        self->x + self->hitbox_width/2, self->y, self->z,
-        self->x + self->hitbox_width/2, self->y + self->hitbox_height, self->z,
-        255, 0, 0, 1.0f 
+        vertical
     );
 }
