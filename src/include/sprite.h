@@ -13,6 +13,9 @@ typedef struct SPRITE_STRUCT
     unsigned int animated;
     unsigned int flip_x;
     unsigned int flip_y;
+    float r;
+    float g;
+    float b;
     
     draw_program_T* draw_program;
 } sprite_T;

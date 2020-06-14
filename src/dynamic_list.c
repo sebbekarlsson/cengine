@@ -67,7 +67,7 @@ void dynamic_list_remove(dynamic_list_T* dynamic_list, void* element, void (*fre
     if (dynamic_list->size == 0)
         return;
 
-    int index = 0;
+    int index = -1;
 
     for (int i = 0; i < dynamic_list->size; i++)
     {
@@ -77,6 +77,9 @@ void dynamic_list_remove(dynamic_list_T* dynamic_list, void* element, void (*fre
             break;
         }
     }
+
+    if (index == -1)
+        return;
     
     if (free_method != (void*) 0)
         free_method(dynamic_list->items[index]);

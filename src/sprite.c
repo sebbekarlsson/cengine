@@ -15,6 +15,9 @@ sprite_T* init_sprite()
     sprite->flip_x = 0;
     sprite->flip_y = 0;
     sprite->draw_program = init_draw_program(APP->shader_program_default);
+    sprite->r = 255;
+    sprite->g = 255;
+    sprite->b = 255;
     draw_program_genbuffers(sprite->draw_program);
 
     return sprite;
@@ -59,9 +62,9 @@ void sprite_draw(sprite_T* sprite, float x, float y, float z)
     draw_options.z = z;
     draw_options.width = texture->width;
     draw_options.height = texture->height;
-    draw_options.r = 255;
-    draw_options.g = 255;
-    draw_options.b = 255;
+    draw_options.r = sprite->r;
+    draw_options.g = sprite->g;
+    draw_options.b = sprite->b;
     draw_options.shift_x = texture->shift_x;
     draw_options.shift_y = texture->shift_y;
     draw_options.atlas_width = texture->atlas_width;
