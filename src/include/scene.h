@@ -26,6 +26,8 @@ typedef struct SCENE_STRUCT
     float r;
     float g;
     float b;
+
+    unsigned int paused;
 } scene_T;
 
 scene_T* init_scene();

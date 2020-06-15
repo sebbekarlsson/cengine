@@ -37,6 +37,8 @@ scene_T* scene_constructor(scene_T* scene)
     scene->g = 0;
     scene->b = 0;
 
+    scene->paused = 0;
+
     return scene;
 }
 
@@ -72,15 +74,18 @@ void scene_free(scene_T* scene)
 
 void scene_tick(scene_T* scene)
 {
-    for (int i = 0; i < scene->actors->size; i++)
+    if (!scene->paused)
     {
-        actor_T* actor = (actor_T*) scene->actors->items[i];
+        for (int i = 0; i < scene->actors->size; i++)
+        {
+            actor_T* actor = (actor_T*) scene->actors->items[i];
 
-        if (actor->tick)
-            actor->tick(actor);
+            if (actor->tick)
+                actor->tick(actor);
 
-        if (actor->sprite)
-            sprite_tick(actor->sprite);
+            if (actor->sprite)
+                sprite_tick(actor->sprite);
+        }
     }
 
     if (scene->tick)
