@@ -81,12 +81,17 @@ void draw_quad(
     glEnableVertexAttribArray(4);
 
     glUniform1i(glGetUniformLocation(draw_program->shader_program, "atlas_width"), draw_options.atlas_width);
-    glUniform1i(glGetUniformLocation(draw_program->shader_program, "atlas_height"), draw_options.atlas_height);
+    glUniform1i(glGetUniformLocation(draw_program->shader_program, "atlas_height"), draw_options.atlas_height); 
 
     glUniform1i(glGetUniformLocation(draw_program->shader_program, "flip_x"), draw_options.flip_x);
-    glUniform1i(glGetUniformLocation(draw_program->shader_program, "flip_y"), draw_options.flip_y);
+    glUniform1i(glGetUniformLocation(draw_program->shader_program, "flip_y"), draw_options.flip_y); 
 
     glUniform3fv(glGetUniformLocation(draw_program->shader_program, "world_pos"), 1, (float[]){ draw_options.x, draw_options.y, draw_options.z });
+    
+    glUniform1f(glGetUniformLocation(draw_program->shader_program, "time"), (float) application_get_time());
+
+    glUniform1f(glGetUniformLocation(draw_program->shader_program, "pan_x"), draw_options.pan_x);
+    glUniform1f(glGetUniformLocation(draw_program->shader_program, "pan_y"), draw_options.pan_y);
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 

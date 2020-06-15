@@ -11,12 +11,17 @@ flat in int texture_shift_y;
 uniform int atlas_width;
 uniform int atlas_height;
 
+uniform float pan_x;
+uniform float pan_y;
+
 uniform sampler2D u_texture;
 
 uniform vec3 world_pos;
 uniform vec3 light_pos;
 
 uniform int lighting_enabled;
+
+uniform float time;
 
 #define PI 3.1415926535897932384626433832795
 #define MAX_DARKNESS 1.95f
@@ -57,5 +62,10 @@ void main()
         shade = vec4(brightness_mod, brightness_mod, brightness_mod, SHADE_OPACITY);
     }
 
-    FragColor = fragment_color * texture2D(u_texture, vec2((fragment_texcoord.x + x) * scalar_x,  (fragment_texcoord.y * scalar_y) + y * scalar_y)) * (vec4(1, 1, 1, 1) + shade);
+    float tex_x = (fragment_texcoord.x + x) * scalar_x;
+    float tex_y = (fragment_texcoord.y * scalar_y) + y * scalar_y;
+
+    vec2 texture_pos = vec2(tex_x + pan_x, tex_y + pan_y);
+
+    FragColor = fragment_color * texture2D(u_texture, texture_pos) * (vec4(1, 1, 1, 1) + shade);
 }

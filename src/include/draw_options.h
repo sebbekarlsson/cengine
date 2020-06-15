@@ -35,9 +35,11 @@ typedef struct DRAW_OPTIONS_STRUCT
     float endx;
     float endy;
     float endz;
+    float pan_x;
+    float pan_y;
 } draw_options_T;
 
-#define DRAW_OPTIONS_INIT {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1.0f, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+#define DRAW_OPTIONS_INIT {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1.0f, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 
 void draw_options_get_matrix(draw_options_T draw_options, mat4 dest);
 #endif
