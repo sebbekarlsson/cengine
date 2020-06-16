@@ -1,6 +1,7 @@
 #include "include/keyboard.h"
 #include "include/application.h"
 #include <GLFW/glfw3.h>
+#include <string.h>
 
 
 extern application_T* APP;
@@ -31,6 +32,5 @@ int keyboard_check_released(int key)
 
 void keyboard_reset_keys(keyboard_T* keyboard)
 {
-    for (int i = 0; i < KEYBOARD_NR_KEYS; i++)
-        keyboard->keys[i] = GLFW_RELEASE;
+    memset(keyboard->keys, GLFW_RELEASE, sizeof(int) * KEYBOARD_NR_KEYS);
 }
