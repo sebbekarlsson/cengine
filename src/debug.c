@@ -2,8 +2,54 @@
 #include "include/draw.h"
 #include "include/application.h"
 #include <string.h>
+#include <errno.h>
+#include <sys/resource.h>
+
 
 extern application_T* APP;
+
+void debug_get_statm(statm_T* result)
+{
+  const char* statm_path = "/proc/self/statm";
+
+  FILE *f = fopen(statm_path, "r");
+
+  if(!f)
+  {
+      perror(statm_path);
+      abort();
+  }
+
+  if(fscanf(
+      f,
+      "%ld %ld %ld %ld %ld %ld %ld",
+      &result->size,
+      &result->resident,
+      &result->share,
+      &result->text,
+      &result->lib,
+      &result->data,
+      &result->dt
+  ) != 7)
+  {
+    perror(statm_path);
+    abort();
+  }
+
+  fclose(f);
+}
+
+unsigned long get_mem_usage()
+{
+    struct rusage r_usage;
+
+    int ret = getrusage(RUSAGE_SELF,&r_usage);
+
+    if(ret != 0)
+        printf("Error in getrusage. errno = %d\n", errno);
+
+   return r_usage.ru_maxrss;
+}
 
 void debug_tick()
 {
@@ -30,41 +76,13 @@ static void draw_debug_bg(float x, float y, float z, float width, float height)
     );
 }
 
-static size_t draw_debug_delta_time(float x, float y, float z, int fontsize)
-{
-    char* str = calloc(225, sizeof(char));
-    sprintf(str, "delta: %1.6f", APP->delta_time);
-    size_t size = strlen(str);
-
-    scene_T* scene = application_get_current_scene(APP);
-
-    draw_options_T options = DRAW_OPTIONS_INIT;
-    options.x = x;
-    options.y = y + DEBUG_FONT_SIZE;
-    options.z = z;
-    options.r = 255;
-    options.g = 255;
-    options.b = 255;
-    options.fontpath = DEBUG_FONT;
-    options.font_size = fontsize;
-    options.text = str;
-
-    draw_text(
-        scene->draw_program_text,
-        options        
-    );
-
-    free(str);
-
-    return size;
-}
-
-static size_t draw_debug_nr_actors(float x, float y, float z, int fontsize)
+static size_t draw_debug_general(float x, float y, float z, int fontsize)
 {
     scene_T* scene = application_get_current_scene(APP);
 
-    char* str = calloc(225, sizeof(char));
-    sprintf(str, "actors: %d", (int) scene->actors->size);
+    const char* template = "(%dD) | FPS: %1.2f | scene: %d | actors: %d | delta: %1.4f";
+    char* str = calloc(strlen(template) + 428, sizeof(char));
+    sprintf(str, template, scene->camera->dimensions, APP->fps, APP->scene_index, (int) scene->actors->size, APP->delta_time);
     size_t size = strlen(str);
 
     draw_options_T options = DRAW_OPTIONS_INIT;
@@ -88,70 +106,18 @@ static size_t draw_debug_nr_actors(float x, float y, float z, int fontsize)
     return size;
 }
 
-static size_t draw_debug_scene_index(float x, float y, float z, int fontsize)
+static size_t draw_debug_memory_usage(float x, float y, float z, int fontsize)
 {
     scene_T* scene = application_get_current_scene(APP);
 
-    char* str = calloc(128, sizeof(char));
-    sprintf(str, "scene: %d", (int) APP->scene_index);
-    size_t size = strlen(str);
+    statm_T stats = {};
+    debug_get_statm(&stats);
 
-    draw_options_T options = DRAW_OPTIONS_INIT;
-    options.x = x;
-    options.y = y + DEBUG_FONT_SIZE;
-    options.z = z;
-    options.r = 255;
-    options.g = 255;
-    options.b = 255;
-    options.fontpath = DEBUG_FONT;
-    options.font_size = fontsize;
-    options.text = str;
+    unsigned long int mem_usage = get_mem_usage();
 
-    draw_text(
-        scene->draw_program_text,
-        options        
-    );
-
-    free(str);
-
-    return size;
-}
-
-static size_t draw_debug_dimensions(float x, float y, float z, int fontsize)
-{
-    scene_T* scene = application_get_current_scene(APP);
-
-    char* str = calloc(128, sizeof(char));
-    sprintf(str, "(%dD)", (int) scene->camera->dimensions);
-    size_t size = strlen(str);
-
-    draw_options_T options = DRAW_OPTIONS_INIT;
-    options.x = x;
-    options.y = y + DEBUG_FONT_SIZE;
-    options.z = z;
-    options.r = 255;
-    options.g = 255;
-    options.b = 255;
-    options.fontpath = DEBUG_FONT;
-    options.font_size = fontsize;
-    options.text = str;
-
-    draw_text(
-        scene->draw_program_text,
-        options        
-    );
-
-    free(str);
-
-    return size;
-}
-
-static size_t draw_debug_fps(float x, float y, float z, int fontsize)
-{
-    scene_T* scene = application_get_current_scene(APP);
-
-    char* str = calloc(225, sizeof(char));
-    sprintf(str, "FPS: %1.6f", APP->fps);
+    const char* template = "Mem: %ld KB | size: %ld | resident: %ld | data: %ld | text: %ld";
+    char* str = calloc(strlen(template) + 428, sizeof(char));
+    sprintf(str, template, mem_usage, stats.size, stats.resident, stats.data, stats.text);
     size_t size = strlen(str);
 
     draw_options_T options = DRAW_OPTIONS_INIT;
@@ -177,18 +143,16 @@ static size_t draw_debug_fps(float x, float y, float z, int fontsize)
 
 void debug_draw()
 {
-    draw_debug_bg(0, 0, DEBUG_Z_INDEX, RES_WIDTH, 32);
+    draw_debug_bg(0, 0, DEBUG_Z_INDEX, RES_WIDTH, 64);
     
     const float TEXT_SIZE_MUL = (DEBUG_FONT_SIZE / 2) + (DEBUG_PADDING / 2);
     float x = 0;
+    float y = 0;
 
-    x += draw_debug_dimensions(DEBUG_PADDING + x, (32 / 2) - DEBUG_FONT_SIZE / 2, DEBUG_Z_INDEX + 1, DEBUG_FONT_SIZE) * TEXT_SIZE_MUL;
+    x += draw_debug_general(DEBUG_PADDING + x, y + (32 / 2) - DEBUG_FONT_SIZE / 2, DEBUG_Z_INDEX + 1, DEBUG_FONT_SIZE) * TEXT_SIZE_MUL;
     
-    x += draw_debug_fps(DEBUG_PADDING + x, (32 / 2) - DEBUG_FONT_SIZE / 2, DEBUG_Z_INDEX + 1, DEBUG_FONT_SIZE) * TEXT_SIZE_MUL;
+    y += 32; 
+    x = 0;
     
-    x += draw_debug_delta_time(DEBUG_PADDING + x, (32 / 2) - DEBUG_FONT_SIZE / 2, DEBUG_Z_INDEX + 1, DEBUG_FONT_SIZE) * TEXT_SIZE_MUL;
-    
-    x += draw_debug_scene_index(DEBUG_PADDING + x, (32 / 2) - DEBUG_FONT_SIZE / 2, DEBUG_Z_INDEX + 1, DEBUG_FONT_SIZE) * TEXT_SIZE_MUL;
-    
-    x += draw_debug_nr_actors(DEBUG_PADDING + x, (32 / 2) - DEBUG_FONT_SIZE / 2, DEBUG_Z_INDEX + 1, DEBUG_FONT_SIZE) * TEXT_SIZE_MUL;
+    x += draw_debug_memory_usage(DEBUG_PADDING + x, y + (32 / 2) - DEBUG_FONT_SIZE / 2, DEBUG_Z_INDEX + 1, DEBUG_FONT_SIZE) * TEXT_SIZE_MUL;
 }
