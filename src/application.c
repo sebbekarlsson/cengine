@@ -36,6 +36,8 @@ application_T* init_application(int width, int height, const char* title)
     app->fps_delta_time = 0;
     app->fps_last_time = 0;
 
+    app->limit_fps = 1;
+
     return app;
 }
 

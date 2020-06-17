@@ -79,8 +79,7 @@ int cengine_main(int argc, char* argv[])
 
         glfwSwapBuffers(APP->window->window);
         
-        // uncomment this to remove the 60fps cap.
-        // glfwSwapInterval(0);
+        glfwSwapInterval(APP->limit_fps ? 1 : 0);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

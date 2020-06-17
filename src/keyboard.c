@@ -19,6 +19,9 @@ void keyboard_tick()
 {
     if (keyboard_check_pressed_once(GLFW_KEY_F2))
         APP->debug_mode = !APP->debug_mode;
+
+    if (keyboard_check_pressed_once(GLFW_KEY_F3))
+        APP->limit_fps = !APP->limit_fps;
 }
 
 int keyboard_check_pressed(int key)

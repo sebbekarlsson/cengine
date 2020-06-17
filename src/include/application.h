@@ -30,6 +30,8 @@ typedef struct APPLICATION_STRUCT
     unsigned int frames;
     double fps_delta_time;
     double fps_last_time;
+
+    unsigned int limit_fps;
 } application_T;
 
 application_T* init_application(int width, int height, const char* title);
