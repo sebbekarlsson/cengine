@@ -19,17 +19,17 @@ extern application_T* APP;
 void physics_to_zero(float* value, float friction)
 {
     if (*value > 0) {
-        if (*value - friction * APP->delta_time < 0)
+        if (*value - (friction * APP->delta_time) < 0)
             *value = 0.0f;
         else
-            *value -= friction * APP->delta_time;
+            *value -= (friction * APP->delta_time);
     }
 
     if (*value < 0) {
-        if (*value + friction * APP->delta_time > 0)
+        if (*value + (friction * APP->delta_time) > 0)
             *value = 0.0f;
         else
-            *value += friction * APP->delta_time;
+            *value += (friction * APP->delta_time);
     }
 }
 

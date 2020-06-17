@@ -12,6 +12,8 @@ typedef struct CAMERA_STRUCT
     mat4 view;
     mat4 projection;
 
+    unsigned int dimensions;
+
     float offset_x;
     float offset_y;
     float offset_z;
@@ -21,7 +23,7 @@ typedef struct CAMERA_STRUCT
     unsigned int reverse;
 } camera_T;
 
-camera_T* init_camera(float x, float y, float z);
+camera_T* init_camera(float x, float y, float z, unsigned int dimensions);
 
 void camera_free(camera_T* camera);
 

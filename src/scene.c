@@ -10,13 +10,13 @@
 extern application_T* APP;
 
 
-scene_T* init_scene()
+scene_T* init_scene(unsigned int dimensions)
 {
     scene_T* scene = calloc(1, sizeof(struct SCENE_STRUCT));
-    return scene_constructor(scene);
+    return scene_constructor(scene, dimensions);
 }
 
-scene_T* scene_constructor(scene_T* scene)
+scene_T* scene_constructor(scene_T* scene, unsigned int dimensions)
 {
     scene->actors = init_dynamic_list(sizeof(struct ACTOR_STRUCT*));
 
@@ -27,7 +27,7 @@ scene_T* scene_constructor(scene_T* scene)
     scene->pre_draw = (void*) 0;
     scene->free = (void*) 0;
 
-    scene->camera = init_camera(0, 0, 0);
+    scene->camera = init_camera(0, 0, 0, dimensions);
 
     scene->draw_program = init_draw_program(APP->shader_program_default);
     scene->draw_program_text = init_draw_program(APP->shader_program_text);

@@ -15,6 +15,12 @@ keyboard_T* init_keyboard()
     return keyboard;
 }
 
+void keyboard_tick()
+{
+    if (keyboard_check_pressed_once(GLFW_KEY_F2))
+        APP->debug_mode = !APP->debug_mode;
+}
+
 int keyboard_check_pressed(int key)
 {
     return glfwGetKey(APP->window->window, key) == GLFW_PRESS;

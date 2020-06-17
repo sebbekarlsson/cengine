@@ -8,13 +8,15 @@
 extern application_T* APP;
 
 
-camera_T* init_camera(float x, float y, float z)
+camera_T* init_camera(float x, float y, float z, unsigned int dimensions)
 {
     camera_T* camera = calloc(1, sizeof(struct CAMERA_STRUCT));
     actor_constructor((actor_T*)camera, x, y, z);
     
     mat4 v = GLM_MAT4_IDENTITY_INIT;
     glm_mat4_copy(v, camera->view);
+
+    camera->dimensions = dimensions;
 
     camera->offset_x = 0;
     camera->offset_y = 0;
@@ -24,7 +26,7 @@ camera_T* init_camera(float x, float y, float z)
 
     camera->reverse = 0;
 
-    switch (APP->dimensions)
+    switch (camera->dimensions)
     {
         case 2: glm_ortho(0.0f, APP->window->width, APP->window->height, 0, -10.0f, 100.0f, camera->projection); break;
         case 3: glm_perspective(
@@ -33,7 +35,7 @@ camera_T* init_camera(float x, float y, float z)
                     0.01f, 1000.0f,
                     camera->projection
                 ); break;
-        default: { printf("Cannot create an application with %d dimensions.\n", APP->dimensions); exit(1); } break;
+        default: { printf("Cannot create a camera with %d dimensions.\n", camera->dimensions); exit(1); } break;
     }
 
     return camera;

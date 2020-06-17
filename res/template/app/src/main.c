@@ -8,7 +8,7 @@ extern application_T* APP;
 
 int main(int argc, char* argv[])
 {
-    APP = init_application(640, 480, 2, "App");
+    APP = init_application(640, 480, "App");
 
     application_add_scene(APP, (scene_T*) init_main_scene());
 

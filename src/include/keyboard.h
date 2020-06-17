@@ -9,6 +9,8 @@ typedef struct KEYBOARD_STRUCT {
 
 keyboard_T* init_keyboard();
 
+void keyboard_tick();
+
 int keyboard_check_pressed(int key);
 
 int keyboard_check_pressed_once(int key);

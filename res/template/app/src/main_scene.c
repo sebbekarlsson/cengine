@@ -6,7 +6,7 @@
 main_scene_T* init_main_scene()
 {
     main_scene_T* main_scene = calloc(1, sizeof(struct MAIN_SCENE_STRUCT));
-    scene_T* scene = scene_constructor((scene_T*) main_scene);
+    scene_T* scene = scene_constructor((scene_T*) main_scene, 2);
 
     scene_add_actor(
         scene,

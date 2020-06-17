@@ -2,13 +2,11 @@
 #include "include/shader.h"
 
 
-application_T* init_application(int width, int height, int dimensions, const char* title)
+application_T* init_application(int width, int height, const char* title)
 {
     application_T* app = calloc(1, sizeof(struct APPLICATION_STRUCT));
     app->scene_index = 0;
     app->scenes = init_dynamic_list(sizeof(struct SCENE_STRUCT*));
-
-    app->dimensions = dimensions;
 
     app->window = init_window(width, height, title);
 
@@ -29,8 +27,14 @@ application_T* init_application(int width, int height, int dimensions, const cha
 
     app->debug_mode = 0;
 
+    app->delta_time = 0;
     app->current_time = application_get_time();
-    app->last_time = app->current_time; 
+    app->last_time = app->current_time;
+
+    app->fps = 0;
+    app->frames = 0;
+    app->fps_delta_time = 0;
+    app->fps_last_time = 0;
 
     return app;
 }

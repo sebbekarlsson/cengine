@@ -6,6 +6,7 @@
 #include "include/draw.h"
 #include "include/texture.h"
 #include "include/scene.h"
+#include "include/debug.h"
 
 
 extern application_T* APP;
@@ -57,6 +58,12 @@ int cengine_main(int argc, char* argv[])
         scene_tick(scene);
         scene_draw(scene);
 
+        if (APP->debug_mode)
+        {
+            debug_tick();
+            debug_draw();
+        }
+
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
         glBlitFramebuffer(
             0,
@@ -71,14 +78,28 @@ int cengine_main(int argc, char* argv[])
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
         glfwSwapBuffers(APP->window->window);
+        
+        // uncomment this to remove the 60fps cap.
+        // glfwSwapInterval(0);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        keyboard_tick();
         keyboard_reset_keys(KEYBOARD); 
 
         glfwPollEvents();
 
+        APP->frames += 1;
         APP->current_time = application_get_time();
+        APP->fps_delta_time = APP->current_time - APP->fps_last_time;
+
+        if (APP->current_time - APP->fps_last_time >= 1.0)
+        {
+            APP->fps = (double)(APP->frames) / APP->fps_delta_time;
+            APP->frames = 0;
+            APP->fps_last_time = APP->current_time;
+        }
+
         APP->delta_time = APP->current_time - APP->last_time;
         APP->last_time = APP->current_time;
     }

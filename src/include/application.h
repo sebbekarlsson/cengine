@@ -10,8 +10,6 @@ typedef struct APPLICATION_STRUCT
     int scene_index;
     dynamic_list_T* scenes;
 
-    int dimensions;
-
     window_T* window;
 
     // shaders
@@ -25,10 +23,16 @@ typedef struct APPLICATION_STRUCT
     // time
     double delta_time;
     double current_time;
-    double last_time; 
+    double last_time;
+
+    // fps calculations
+    double fps;
+    unsigned int frames;
+    double fps_delta_time;
+    double fps_last_time;
 } application_T;
 
-application_T* init_application(int width, int height, int dimensions, const char* title);
+application_T* init_application(int width, int height, const char* title);
 
 void application_free(application_T* app);
 

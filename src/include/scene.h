@@ -32,7 +32,7 @@ typedef struct SCENE_STRUCT
 
 scene_T* init_scene();
 
-scene_T* scene_constructor(scene_T* scene);
+scene_T* scene_constructor(scene_T* scene, unsigned int dimensions);
 
 void scene_free(scene_T* scene);
 
