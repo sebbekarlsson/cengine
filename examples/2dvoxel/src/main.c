@@ -16,7 +16,7 @@ extern application_T* APP;
  */
 int main(int argc, char* argv[])
 {
-    APP = init_application(640, 480, 2, "App");
+    APP = init_application(640, 480, "App");
     //APP->debug_mode = 1;
 
     TEXTURE_TILES = texture_get_id("res/image/tiles.png");

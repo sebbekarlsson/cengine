@@ -116,7 +116,7 @@ int ikea_scene_get_block(ikea_scene_T* ikea_scene, float x, float y)
 ikea_scene_T* init_ikea_scene()
 {
     ikea_scene_T* ikea_scene = calloc(1, sizeof(struct IKEA_SCENE_STRUCT));
-    scene_T* scene = scene_constructor((scene_T*)ikea_scene);
+    scene_T* scene = scene_constructor((scene_T*)ikea_scene, 2);
     scene->draw = ikea_scene_draw;
     scene->tick = ikea_scene_tick;
 
