@@ -12,8 +12,7 @@ extern application_T* APP;
 
 scene_T* init_scene(unsigned int dimensions)
 {
-    scene_T* scene = calloc(1, sizeof(struct SCENE_STRUCT));
-    return scene_constructor(scene, dimensions);
+    return scene_constructor((scene_T*) calloc(1, sizeof(struct SCENE_STRUCT)), dimensions);
 }
 
 scene_T* scene_constructor(scene_T* scene, unsigned int dimensions)

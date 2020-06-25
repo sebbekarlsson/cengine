@@ -30,7 +30,7 @@ typedef struct SCENE_STRUCT
     unsigned int paused;
 } scene_T;
 
-scene_T* init_scene();
+scene_T* init_scene(unsigned int dimensions);
 
 scene_T* scene_constructor(scene_T* scene, unsigned int dimensions);
 
