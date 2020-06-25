@@ -7,7 +7,7 @@ extern application_T* APP;
 
 scene_T* init_main_scene()
 {
-    scene_T* scene = init_scene();
+    scene_T* scene = init_scene(2);
 
     texture_T* texture = texture_get("res/banana.png");
 
@@ -27,7 +27,7 @@ scene_T* init_main_scene()
 
 int main(int argc, char* argv[])
 {
-    APP = init_application(640, 480, 2, "App");
+    APP = init_application(640, 480, "App");
     APP->debug_mode = 1;
 
     application_add_scene(APP, init_main_scene());

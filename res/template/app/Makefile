@@ -6,10 +6,10 @@ libs = `pkg-config --libs cengine`
 
 
 $(exec): $(objects)
-	gcc $(objects) $(flags) -o $(exec) $(libs)
+	gcc $(objects) $(flags) $(libs) -o $(exec)
 
 %.o: %.c include/%.h
-	gcc -c $(flags) $< -o $@ $(libs)
+	gcc -c $(flags) $< $(libs) -o $@
 
 clean:
 	-rm *.out

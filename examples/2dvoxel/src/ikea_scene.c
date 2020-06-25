@@ -80,7 +80,7 @@ void ikea_scene_draw(scene_T* scene)
     draw_options.r = 255;
     draw_options.g = 255;
     draw_options.b = 255;
-    draw_options.fontpath = "/usr/share/fonts/truetype/crosextra/Carlito-Regular.ttf";
+    draw_options.fontpath = "/usr/local/share/cengine/res/fonts/november.ttf";
 
     draw_text(scene->draw_program_text, draw_options);
 
